@@ -70,9 +70,6 @@ your_pokemon = charizard
 enemy_pokemon = bulbasaur
 
 
-
-
-
 # while True:
 #     # attack_opt = input(f"hva vil du angripe med?\n 1 {flamethrower}")
 #     # enemy_attack_opt = enemy_move_calc_func
