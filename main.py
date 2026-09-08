@@ -14,28 +14,31 @@
 
 
 class Pokemon:
-    def __init__(self, name: str, element: str, hp:int, defence: int, attack: int, sp_attack: int, sp_defence: int, speed: int, moves: list, fainted = False):
+    def __init__(self, name: str, element: str, hp:int, defense: int, attack: int, sp_attack: int, sp_defense: int, speed: int, moves=None, fainted = False):
         self.name = name
         self.element = element
         self.hp = hp
         self.max_hp = hp
-        self.defence = defence
+        self.defense = defense
         self.attack = attack
         self.sp_attack = sp_attack
-        self.sp_defence = sp_defence
+        self.sp_defense = sp_defense
         self.speed = speed
-        if moves == None:
-            moves = [Scratch]
-        self.moves = moves
+        
+        if moves is None:
+            self.moves = [scratch]
+        else:
+            self.moves = moves
+            
         self.fainted = False
     
     def talk(self):
         print(f"jeg er {self.name}")
-        print(f"jeg har {self.defence} defence og {self.attack} attack")
+        print(f"jeg har {self.defense} defense og {self.attack} attack")
         
         print("jeg har trekk som:")
-        for i in range(len(self.moves)):
-            print(self.moves[i].name)
+        for move in self.moves:
+            print(move.name)
     
     def take_damage(self, incoming_damage):
         self.hp -= int(incoming_damage)
@@ -58,16 +61,16 @@ class Move():
         self.element = element
         self.power = power
         self.accuracy = accuracy
-        self.priotiry = priority
+        self.priority = priority
     
     
-Scratch = Move("Scratch", "normal", 10, 100, 1)
-Flamethrower = Move("Flamethrower", "fire", 70, 100, 0)
-Grass_knot = Move("Grass knot", "grass", 60, 100, 1)
+scratch = Move("scratch", "normal", 10, 100, 1)
+flamethrower = Move("flamethrower", "fire", 70, 100, 0)
+grass_knot = Move("grass knot", "grass", 60, 100, 1)
 
-charizard = Pokemon("charizard", "fire", 100, 70, 90, 70, 50, 65, [Scratch, Flamethrower])
-bulbasaur = Pokemon("bulbasaur", "grass", 45, 49, 49, 65, 65, 45, [Scratch, Grass_knot])
-testmon = Pokemon("testmon", "test_element", 1,1,1,1,1,1, [])
+charizard = Pokemon("charizard", "fire", 100, 70, 90, 70, 50, 65, [scratch, flamethrower])
+bulbasaur = Pokemon("bulbasaur", "grass", 45, 49, 49, 65, 65, 45, [scratch, grass_knot])
+testmon = Pokemon("testmon", "test_element", 1,1,1,1,1,1)
 
 charizard.take_damage(50)
 charizard.take_damage(50)
@@ -80,6 +83,7 @@ testmon.talk()
 
 your_pokemon = charizard
 enemy_pokemon = bulbasaur
+
 
 
 # while True:
