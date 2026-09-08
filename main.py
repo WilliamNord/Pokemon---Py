@@ -14,7 +14,7 @@
 
 
 class Pokemon:
-    def __init__(self, name: str, element: str, hp:int, defence: int, attack: int, sp_attack: int, sp_defence: int, speed: int, fainted = False):
+    def __init__(self, name: str, element: str, hp:int, defence: int, attack: int, sp_attack: int, sp_defence: int, speed: int, moves: list, fainted = False):
         self.name = name
         self.element = element
         self.hp = hp
@@ -24,11 +24,18 @@ class Pokemon:
         self.sp_attack = sp_attack
         self.sp_defence = sp_defence
         self.speed = speed
-        self.fained = False
+        if moves == None:
+            moves = [Scratch]
+        self.moves = moves
+        self.fainted = False
     
     def talk(self):
         print(f"jeg er {self.name}")
         print(f"jeg har {self.defence} defence og {self.attack} attack")
+        
+        print("jeg har trekk som:")
+        for i in range(len(self.moves)):
+            print(self.moves[i].name)
     
     def take_damage(self, incoming_damage):
         self.hp -= int(incoming_damage)
@@ -41,9 +48,11 @@ class Pokemon:
         if self.hp <= 0:
             self.fained = True
             return True
+        else:
+            return False
 
 
-class move():
+class Move():
     def __init__(self, name: str , element: str, power: int, accuracy: int, priority: int):
         self.name = name
         self.element = element
@@ -52,9 +61,13 @@ class move():
         self.priotiry = priority
     
     
+Scratch = Move("Scratch", "normal", 10, 100, 1)
+Flamethrower = Move("Flamethrower", "fire", 70, 100, 0)
+Grass_knot = Move("Grass knot", "grass", 60, 100, 1)
 
-charizard = Pokemon("charizard", "fire", 100, 70, 90, 70, 50, 65)
-bulbasaur = Pokemon("bulbasaur", "grass", 45, 49, 49, 65, 65, 45)
+charizard = Pokemon("charizard", "fire", 100, 70, 90, 70, 50, 65, [Scratch, Flamethrower])
+bulbasaur = Pokemon("bulbasaur", "grass", 45, 49, 49, 65, 65, 45, [Scratch, Grass_knot])
+testmon = Pokemon("testmon", "test_element", 1,1,1,1,1,1, [])
 
 charizard.take_damage(50)
 charizard.take_damage(50)
@@ -62,9 +75,8 @@ charizard.take_damage(50)
 
 charizard.talk()
 bulbasaur.talk()
+testmon.talk()
 
-flamethrower = move("flamethrower", "fire", 70, 100, 0)
-grass_knot = move("grass knot", "grass", 60, 100, 1)
 
 your_pokemon = charizard
 enemy_pokemon = bulbasaur
