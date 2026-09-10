@@ -12,6 +12,21 @@
 # john.hilsen()
 # hilde.hilsen()
 
+elementer = {
+    "fire": {
+        "strong": ["ice", "grass", "metal", "bug"],
+        "weak": ["ground", "water", "rock",],
+        },
+    "water": {
+        "strong": ["fire", "ground","electric"],
+        "weak": ["grass", "electric"],
+    }
+}
+
+print(elementer["fire"]["strong"][0])
+
+
+import math
 
 class Pokemon:
     def __init__(self, name: str, element: str, hp:int, defense: int, attack: int, sp_attack: int, sp_defense: int, speed: int, moves=None, fainted = False):
@@ -41,11 +56,12 @@ class Pokemon:
             print(move.name)
     
     def take_damage(self, incoming_damage):
-        self.hp -= int(incoming_damage)
+        self.hp -= float(incoming_damage)
         if self.hp <= 0:
             self.hp = 0
             self.fained = True
-        print(f"{self.name} took {incoming_damage} and has {self.hp}hp remaining")
+        hp_persent = round((self.hp / self.max_hp)*100, 2)
+        print(f"{self.name} took {incoming_damage} and has {self.hp} ({hp_persent}%)hp remaining")
     
     def is_fainted(self):
         if self.hp <= 0:
@@ -73,7 +89,11 @@ bulbasaur = Pokemon("bulbasaur", "grass", 45, 49, 49, 65, 65, 45, [scratch, gras
 testmon = Pokemon("testmon", "test_element", 1,1,1,1,1,1)
 
 charizard.take_damage(50)
-charizard.take_damage(50)
+
+charizard.take_damage(20)
+charizard.take_damage(10)
+charizard.take_damage(0.5)
+charizard.take_damage(0.05)
 
 
 charizard.talk()
