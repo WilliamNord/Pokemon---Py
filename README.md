@@ -28,5 +28,5 @@ elementer = {
 pokemon begynner eventuelt med veldig lange kalkulasjoner for skade
 ![alt text](image-1.png)
 
-Jeg kommer til å bruke en forenklet versjon fra generation 1
+Jeg kommer til å bruke en forenklet versjon av den fra generation 1
 ![alt text](image-2.png)
