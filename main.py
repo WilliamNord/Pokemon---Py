@@ -12,6 +12,7 @@
 # john.hilsen()
 # hilde.hilsen()
 
+#metode for super effektive typer
 elementer = {
     "fire": {
         "strong": ["ice", "grass", "metal", "bug"],
@@ -60,6 +61,7 @@ class Pokemon:
         if self.hp <= 0:
             self.hp = 0
             self.fained = True
+        
         hp_persent = round((self.hp / self.max_hp)*100, 2)
         print(f"{self.name} took {incoming_damage} and has {self.hp} ({hp_persent}%)hp remaining")
     
