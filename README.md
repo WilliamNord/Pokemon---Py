@@ -24,6 +24,8 @@ elementer = {
 }
 ```
 
+dele kalkulasjon av dmg for fysiske moves og spesial moves til å bruke henholdsvis fysisk defence og special defence 
+
 
 pokemon begynner eventuelt med veldig lange kalkulasjoner for skade
 ![alt text](image-1.png)

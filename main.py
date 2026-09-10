@@ -65,7 +65,7 @@ class Pokemon:
             self.fainted = True
         
         hp_persent = round((self.hp / self.max_hp)*100, 2)
-        print(f"{self.name} took {incoming_damage} damage and has {self.hp} hp remaining ({hp_persent}% remaining")
+        print(f"{self.name} tok {incoming_damage} damage og har {self.hp} hp igjen ({hp_persent})% remaining")
     
     def is_fainted(self):
         if self.hp <= 0:
@@ -93,11 +93,12 @@ def calculate_dmg(attacker, defender, move):
     total_dmg = math.ceil(total_dmg)
     return total_dmg
     
-scratch = Move("scratch", "normal", 10, 100, 1)
+scratch = Move("scratch", "normal", 10, 100, 0)
 flamethrower = Move("flamethrower", "fire", 70, 100, 0)
 grass_knot = Move("grass knot", "grass", 60, 100, 1)
+gun = Move("gun", "amarican", 1000, 90, 2)
 
-charizard = Pokemon("charizard", "fire", 100, 70, 90, 70, 50, 65, [flamethrower, scratch])
+charizard = Pokemon("charizard", "fire", 100, 70, 90, 70, 50, 65, [flamethrower, scratch, gun])
 bulbasaur = Pokemon("bulbasaur", "grass", 45, 49, 49, 65, 65, 45, [grass_knot, scratch])
 testmon = Pokemon("testmon", "test_element", 1,1,1,1,1,1)
 
@@ -128,7 +129,7 @@ def battle(your_pokemon, enemy_pokemon):
         #kode for å spørre spilleren om hvilken move de vil bruke
         move_is_chosen = False
         while move_is_chosen == False:
-            
+            print("\n")
             for i, move in enumerate(your_pokemon.moves):
                 print(f"{i + 1}. {move.name}")
                 
@@ -138,9 +139,12 @@ def battle(your_pokemon, enemy_pokemon):
                 time.sleep(1)
             else:
                 move_is_chosen = True
+                
+            print("\n")
         
         your_move = your_pokemon.moves[player_choice - 1]
-        enemy_move = enemy_pokemon.moves[0]
+        #må senere oppdatere enemy AI
+        enemy_move = enemy_pokemon.moves[1]
         
         time.sleep(buffer_time)
         print("du brukte:", your_pokemon.moves[player_choice - 1].name)
@@ -162,6 +166,7 @@ def battle(your_pokemon, enemy_pokemon):
         
         else:
             print("enemy pokemon er raskest")
+            time.sleep(buffer_time)
             print(f"{enemy_pokemon.name} brukte {enemy_move.name} på din {your_pokemon.name}")
             
             time.sleep(buffer_time)
@@ -170,7 +175,9 @@ def battle(your_pokemon, enemy_pokemon):
             if your_pokemon.is_fainted() == False:
                 time.sleep(buffer_time)
                 enemy_pokemon.take_damage(calculate_dmg(your_pokemon, enemy_pokemon, your_move))
-                
+    
+        time.sleep(buffer_time)
+    
     if your_pokemon.is_fainted() == True:
         print(f"Du tapte mot {enemy_pokemon.name}")
     elif enemy_pokemon.is_fainted() == True:
