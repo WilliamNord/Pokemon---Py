@@ -60,14 +60,14 @@ class Pokemon:
         self.hp -= float(incoming_damage)
         if self.hp <= 0:
             self.hp = 0
-            self.fained = True
+            self.fainted = True
         
         hp_persent = round((self.hp / self.max_hp)*100, 2)
         print(f"{self.name} took {incoming_damage} and has {self.hp} ({hp_persent}%)hp remaining")
     
     def is_fainted(self):
         if self.hp <= 0:
-            self.fained = True
+            self.fainted = True
             return True
         else:
             return False
