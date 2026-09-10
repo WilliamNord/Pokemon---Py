@@ -11,6 +11,7 @@ få pokemon til å holde styr på sine egene moves sin max og current pp.
 
 finne en måte å legge til type effektivitet. Dicts?
 
+``` python
 elementer = {
     "fire": {
         "strong": "ice", "grass", "metal", "bug",
@@ -21,6 +22,7 @@ elementer = {
         "weak": "grass", "electric",,
     }
 }
+```
 
 
 pokemon begynner eventuelt med veldig lange kalkulasjoner for skade
