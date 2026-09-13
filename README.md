@@ -28,7 +28,7 @@ dele kalkulasjon av dmg for fysiske moves og spesial moves til å bruke henholds
 
 
 pokemon begynner eventuelt med veldig lange kalkulasjoner for skade
-![alt text](image-1.png)
+![alt text](imgs/image-1.png)
 
 Jeg kommer til å bruke en forenklet versjon av den fra generation 1
-![alt text](image-2.png)
+![alt text](imgs/image-2.png)
