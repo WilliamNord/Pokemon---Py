@@ -29,59 +29,10 @@ print(elementer["fire"]["strong"][0])
 
 import math
 import time
+from move_class import Move
+from pokemon_class import Pokemon
+from move_bank import *
 
-
-class Pokemon:
-    def __init__(self, name: str, element: str, hp:int, defence: int, attack: int, sp_attack: int, sp_defence: int, speed: int, moves = None, fainted = False):
-        self.name = name
-        self.element = element
-        self.hp = hp
-        self.max_hp = hp
-        self.defence = defence
-        self.attack = attack
-        self.sp_attack = sp_attack
-        self.sp_defence = sp_defence
-        self.speed = speed
-        
-        if moves is None:
-            self.moves = [scratch]
-        else:
-            self.moves = moves
-            
-        self.fainted = False
-    
-    def talk(self):
-        print(f"jeg er {self.name}")
-        print(f"jeg har {self.defence} defence og {self.attack} attack")
-        
-        print("jeg har trekk som:")
-        for move in self.moves:
-            print(move.name)
-    
-    def take_damage(self, incoming_damage):
-        self.hp -= math.ceil(int(incoming_damage))
-        if self.hp <= 0:
-            self.hp = 0
-            self.fainted = True
-        
-        hp_persent = round((self.hp / self.max_hp)*100, 2)
-        print(f"{self.name} tok {incoming_damage} damage og har {self.hp} hp igjen ({hp_persent})% remaining")
-    
-    def is_fainted(self):
-        if self.hp <= 0:
-            self.fainted = True
-            return True
-        else:
-            return False
-
-
-class Move():
-    def __init__(self, name: str , element: str, power: int, accuracy: int, priority: int):
-        self.name = name
-        self.element = element
-        self.power = power
-        self.accuracy = accuracy
-        self.priority = priority
     
 def calculate_dmg(attacker, defender, move):
     power = move.power
@@ -93,10 +44,6 @@ def calculate_dmg(attacker, defender, move):
     total_dmg = math.ceil(total_dmg)
     return total_dmg
     
-scratch = Move("scratch", "normal", 10, 100, 0)
-flamethrower = Move("flamethrower", "fire", 70, 100, 0)
-grass_knot = Move("grass knot", "grass", 60, 100, 1)
-gun = Move("gun", "amarican", 1000, 90, 2)
 
 charizard = Pokemon("charizard", "fire", 100, 70, 90, 70, 50, 65, [flamethrower, scratch, gun])
 bulbasaur = Pokemon("bulbasaur", "grass", 45, 49, 49, 65, 65, 45, [grass_knot, scratch])
@@ -186,21 +133,3 @@ def battle(your_pokemon, enemy_pokemon):
         
     
 battle(your_pokemon, enemy_pokemon)
-
-# while True:
-#     # attack_opt = input(f"hva vil du angripe med?\n 1 {flamethrower}")
-#     # enemy_attack_opt = enemy_move_calc_func
-#     # if your_pokemon.speed > enemy_pokemon.speed:
-#     #     print(f"{your_pokemon.name} går først")
-#     # else:
-#     #     print(f"{enemy_pokemon.name} går først")
-
-
-#kode for om du har lyst til å angripe eller løpe vekk:
-
-# print(f"du er i en kamp med en {enemy_pokemon}")
-# battle_start_opt = input("hva vil du gjøre? 1: attack, 2: run away \n")
-
-# match battle_start_opt:
-#     case "1":
-#         print("battle is started")
