@@ -93,11 +93,11 @@ elementer = {
 
 print(elementer["fire"]["strong"][0])
 
-print(f"fire er bra mot {elementer["fire"]["strong"]}")
+print(f"fire er bra mot {elementer['fire']['strong']}")
 
 def show_effectiveness(): 
     for element in elementer:
-        print(f"{element} er sterk mot {elementer[element]["strong"]}")
+        print(f"{element} er sterk mot {elementer[element]['strong']}")
     
         
         

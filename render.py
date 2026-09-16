@@ -36,9 +36,11 @@ def render_battle(your_pokemon, enemy_pokemon, your_move, enemy_move, first):
     except KeyError:
         print("ERROR: en feil skjedde i render.py")
 
-            
-    print(first_message, effectiveness)
-    print(last_message)
+    if your_pokemon.fainted == False:
+        print(first_message, effectiveness) 
+    if enemy_pokemon.fainted == False:
+        print(last_message)
+        
     print()
     
     print(f"{enemy_pokemon.name}: {get_hp_bar(enemy_pokemon)} {enemy_pokemon.hp}/{enemy_pokemon.max_hp} HP")

@@ -37,7 +37,7 @@ testmon = Pokemon("testmon", "test_element", 1,1,1,1,1,1)
 
 
 your_pokemon = charizard
-enemy_pokemon = bulbasaur
+enemy_pokemon = venusaur
         
     
 pokemon_battle(your_pokemon, enemy_pokemon)
