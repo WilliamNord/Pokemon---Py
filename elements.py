@@ -25,7 +25,7 @@ elementer = {
     },
     "bug":{ 
         "strong": ["grass", "psychic", "dark"],
-        "weak": ["fire", "flying", "poison", "fighting", "ghost", "steek", "fairy"],
+        "weak": ["fire", "flying", "poison", "fighting", "ghost", "steel", "fairy"],
         "no_effect": [],
     },
     "flying":{ 
@@ -85,7 +85,7 @@ elementer = {
     },
     "fairy":{ 
         "strong": ["fighting", "dragon", "dark"],
-        "weak": ["fire", "posion", "steel"],
+        "weak": ["fire", "poison", "steel"],
         "no_effect": [],
     },
     

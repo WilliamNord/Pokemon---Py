@@ -40,4 +40,12 @@ your_pokemon = charizard
 enemy_pokemon = venusaur
         
     
-pokemon_battle(your_pokemon, enemy_pokemon)
+# pokemon_battle(your_pokemon, enemy_pokemon)
+
+trainer = [venusaur, bulbasaur]
+
+print(f"du er i en kamp mot trainer, de har {len(trainer)} pokemon")
+
+for trainers_pokemon in trainer:
+    pokemon_battle(your_pokemon, trainers_pokemon)
+    print(f"det er {len(trainer)-1} pokemon igjen")
