@@ -4,7 +4,7 @@ import math
 scratch = Move("scratch", "normal", 10, 100, 0)
 
 class Pokemon:
-    def __init__(self, name: str, element: str, hp:int, defence: int, attack: int, sp_attack: int, sp_defence: int, speed: int, moves = None, fainted = False):
+    def __init__(self, name: str, element: str, hp:int, attack: int, defence: int, sp_attack: int, sp_defence: int, speed: int, moves = None, fainted = False):
         self.name = name
         self.element = element
         self.hp = hp
@@ -37,7 +37,9 @@ class Pokemon:
             self.fainted = True
         
         hp_persent = round((self.hp / self.max_hp)*100, 2)
-        print(f"{self.name} tok {incoming_damage} damage og har {self.hp} hp igjen ({hp_persent})% remaining")
+        return f"{self.name} tok {incoming_damage} damage"
+        # return f"{self.name} tok {incoming_damage} damage og har {self.hp} hp igjen ({hp_persent})% remaining"
+        # print(f"{self.name} tok {incoming_damage} damage og har {self.hp} hp igjen ({hp_persent})% remaining")
     
     def is_fainted(self):
         if self.hp <= 0:

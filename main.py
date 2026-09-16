@@ -12,28 +12,16 @@
 # john.hilsen()
 # hilde.hilsen()
 
-#metode for super effektive typer
-elementer = {
-    "fire": {
-        "strong": ["ice", "grass", "metal", "bug"],
-        "weak": ["ground", "water", "rock",],
-        },
-    "water": {
-        "strong": ["fire", "ground","electric"],
-        "weak": ["grass", "electric"],
-    }
-}
-
-print(elementer["fire"]["strong"][0])
 
 from move_class import Move
 from pokemon_class import Pokemon
 from move_bank import *
-from battle import *
+from battle import pokemon_battle, calculate_dmg
     
 
-charizard = Pokemon("charizard", "fire", 100, 70, 90, 70, 50, 65, [flamethrower, scratch, gun])
-bulbasaur = Pokemon("bulbasaur", "grass", 45, 49, 49, 65, 65, 45, [grass_knot, scratch])
+charizard = Pokemon("charizard", "fire", 100, 90, 70, 70, 50, 65, [flamethrower, scratch, gun])
+bulbasaur = Pokemon("bulbasaur", "grass", 45, 49, 49, 65, 65, 45, [Seed_Bomb, grass_knot, scratch])
+venusaur = Pokemon("venusaur", "grass", 80, 82, 83, 100, 100, 80, [Solar_Beam, Razor_Leaf])
 testmon = Pokemon("testmon", "test_element", 1,1,1,1,1,1)
 
 # charizard.take_damage(50)
@@ -43,14 +31,13 @@ testmon = Pokemon("testmon", "test_element", 1,1,1,1,1,1)
 # charizard.take_damage(0.5)
 # charizard.take_damage(0.05)
 
-
-charizard.talk()
-bulbasaur.talk()
-testmon.talk()
+# charizard.talk()
+# bulbasaur.talk()
+# testmon.talk()
 
 
 your_pokemon = charizard
 enemy_pokemon = bulbasaur
         
     
-battle(your_pokemon, enemy_pokemon)
+pokemon_battle(your_pokemon, enemy_pokemon)
