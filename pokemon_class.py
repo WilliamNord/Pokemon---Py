@@ -1,7 +1,6 @@
 from move_class import Move
 import math
-
-scratch = Move("scratch", "normal", 10, 100, 0)
+from move_bank import scratch
 
 class Pokemon:
     def __init__(self, name: str, element: str, hp:int, attack: int, defence: int, sp_attack: int, sp_defence: int, speed: int, moves = None, fainted = False):

@@ -8,10 +8,12 @@ elementer = {
     "fire": {
         "strong": ["grass", "ice", "bug", "steel"],
         "weak": ["ground", "water", "rock",],
+        "no_effect": []
         },
     "water": {
         "strong": ["fire", "ground","electric"],
         "weak": ["grass", "electric"],
+        "no_effect": [],
     },
     "grass": {
         "strong": ["water", "rock", "ground",],

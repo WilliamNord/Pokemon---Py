@@ -29,7 +29,7 @@ def ask_player_move(your_pokemon):
     while True:
         print("\n")
         for i, move in enumerate(your_pokemon.moves):
-            print(f"{i + 1}. {move.name} {j}")
+            print(f"{i + 1}. {move.name}")
 
         try:
             player_choice = int(input("hvilket move vil du bruke?: "))
@@ -56,7 +56,7 @@ def pokemon_battle(your_pokemon, enemy_pokemon):
         render_battle(your_pokemon, enemy_pokemon,)
 
         your_move = ask_player_move(your_pokemon)
-        enemy_move = enemy_pokemon.moves[0]  # midlertidig AI
+        enemy_move = enemy_pokemon.moves[0]  # midlertidig enemy AI
 
         first = who_goes_first(your_pokemon, enemy_pokemon, your_move, enemy_move)
 
