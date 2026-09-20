@@ -32,3 +32,9 @@ pokemon begynner eventuelt med veldig lange kalkulasjoner for skade
 
 Jeg kommer til å bruke en forenklet versjon av den fra generation 1
 ![alt text](imgs/image-2.png)
+
+
+
+
+Bugs som må fikses:
+ - inputs kan bufferes

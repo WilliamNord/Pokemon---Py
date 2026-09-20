@@ -95,11 +95,11 @@ elementer = {
 
 print(elementer["fire"]["strong"][0])
 
-print(f"fire er bra mot {elementer['fire']['strong']}")
+def show_effectiveness(element: str):
+    liste = []
+    for i in range(len(elementer[element]["strong"])):
+        liste.append(elementer[element]['strong'][i])
+        
+    print(f"{element} er bra mot {liste}")
 
-def show_effectiveness(): 
-    for element in elementer:
-        print(f"{element} er sterk mot {elementer[element]['strong']}")
-    
-        
-        
+show_effectiveness("fire")

@@ -1,11 +1,11 @@
-from move_class import Move
-import math
 from move_bank import scratch
 
+#Klassen for pokemon objekter
 class Pokemon:
-    def __init__(self, name: str, element: str, hp:int, attack: int, defence: int, sp_attack: int, sp_defence: int, speed: int, moves = None, fainted = False):
+    def __init__(self, name: str, element_1: str, element_2: str, hp: int, attack: int, defence: int, sp_attack: int, sp_defence: int, speed: int, moves = None, fainted = False):
         self.name = name
-        self.element = element
+        self.element_1 = element_1
+        self.element_2 = element_2
         self.hp = hp
         self.max_hp = hp
         self.defence = defence
@@ -29,16 +29,12 @@ class Pokemon:
         for move in self.moves:
             print(move.name)
     
-    def take_damage(self, incoming_damage):
-        self.hp -= math.ceil(int(incoming_damage))
+    def take_damage(self, incoming_damage: int) -> None:
+        self.hp -= int(incoming_damage)
         if self.hp <= 0:
             self.hp = 0
             self.fainted = True
         
-        hp_persent = round((self.hp / self.max_hp)*100, 2)
-        return f"{self.name} tok {incoming_damage} damage"
-        # return f"{self.name} tok {incoming_damage} damage og har {self.hp} hp igjen ({hp_persent})% remaining"
-        # print(f"{self.name} tok {incoming_damage} damage og har {self.hp} hp igjen ({hp_persent})% remaining")
     
     def is_fainted(self):
         if self.hp <= 0:
