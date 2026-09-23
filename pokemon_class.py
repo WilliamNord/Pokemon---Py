@@ -3,11 +3,10 @@ import math
 
 #Klassen for pokemon objekter
 class Pokemon:
-    def __init__(self, name: str, element_1: str, element_2: str, hp: int, attack: int, defence: int, sp_attack: int, sp_defence: int, speed: int, moves = None, level = 10, fainted = False,):
+    def __init__(self, name: str, element_1: str, element_2: str, hp: int, attack: int, defence: int, sp_attack: int, sp_defence: int, speed: int, moves = None, level = 100, fainted = False):
         self.name = name
         self.element_1 = element_1
         self.element_2 = element_2
-        self.max_hp = hp
         self.base_stats = {
                 "hp": hp,
                 "attack": attack,
@@ -16,12 +15,6 @@ class Pokemon:
                 "sp_defence": sp_defence,
                 "speed": speed,
             }
-        self.base_hp = hp
-        self.base_defence = defence
-        self.base_attack = attack
-        self.base_sp_attack = sp_attack
-        self.base_sp_defence = sp_defence
-        self.base_speed = speed
         
         self.level = level
         
@@ -53,6 +46,9 @@ class Pokemon:
             "sp_defence": 0,
             "speed": 0,
         }
+        
+        self.calculate_all_stats()
+        self.hp = self.max_hp
 
     
     #HP kalkuleres litt annerledes enn alle andre stats
@@ -67,17 +63,16 @@ class Pokemon:
             case _:
                 return math.floor(((2 * base_stat + IVs + math.floor(EVs / 4)) * self.level) / 100) + 5
     
-    def calculate_all_stats(self, level: int, base_stat: int, EVs: int, IVs: int):
+    def calculate_all_stats(self):
         """
         denne funksjonen kalkulerer alle stats til en pokemon.
         """
-        self.hp = self.calculate_hp(self.base_hp, self.EVs["hp"], self.IVs["hp"])
-        
-        self.attack = self.calculate_stat(self.base_attack, self.EVs["attack"], self.IVs["attack"])
-        self.defence = self.calculate_stat(self.base_attack, self.EVs["defence"], self.IVs["defence"])
-        self.sp_attack = self.calculate_stat(self.base_attack, self.EVs["sp_attack"], self.IVs["sp_attack"])
-        self.sp_defence = self.calculate_stat(self.base_attack, self.EVs["sp_defence"], self.IVs["sp_defence"])
-        self.speed = self.calculate_stat(self.base_attack, self.EVs["speed"], self.IVs["speed"])
+        self.max_hp = self.calculate_stat("hp")
+        self.attack = self.calculate_stat("attack")
+        self.defence = self.calculate_stat("defence")
+        self.sp_attack = self.calculate_stat("sp_attack")
+        self.sp_defence = self.calculate_stat("sp_defence")
+        self.speed = self.calculate_stat("speed")
     
     def talk(self):
         print(f"jeg er {self.name}")

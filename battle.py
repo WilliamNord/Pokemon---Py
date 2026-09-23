@@ -10,12 +10,14 @@ def calculate_dmg(attacker: object, defender: object, move: object) -> int:
     
     power = move.power
     if move.dmg_category == "physical": 
+        print("physical")
         attack = attacker.attack
         defence = defender.defence
     elif move.dmg_category == "special":
+        print("special")
         attack = attacker.sp_attack
         defence = defender.sp_defence
-    else:
+    elif move.dmg_category == "status":
         return 0
         
     level = 10

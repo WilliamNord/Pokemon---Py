@@ -6,6 +6,3 @@ class Move():
         self.power = power
         self.accuracy = accuracy
         self.priority = priority
-        
-        if dmg_category != "physical" and dmg_category != "special":
-            self.dmg_category = "physical"
