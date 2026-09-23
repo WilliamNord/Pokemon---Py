@@ -1,18 +1,29 @@
 from move_bank import scratch
+import math
 
 #Klassen for pokemon objekter
 class Pokemon:
-    def __init__(self, name: str, element_1: str, element_2: str, hp: int, attack: int, defence: int, sp_attack: int, sp_defence: int, speed: int, moves = None, fainted = False):
+    def __init__(self, name: str, element_1: str, element_2: str, hp: int, attack: int, defence: int, sp_attack: int, sp_defence: int, speed: int, moves = None, level = 10, fainted = False,):
         self.name = name
         self.element_1 = element_1
         self.element_2 = element_2
-        self.hp = hp
         self.max_hp = hp
-        self.defence = defence
-        self.attack = attack
-        self.sp_attack = sp_attack
-        self.sp_defence = sp_defence
-        self.speed = speed
+        self.base_stats = {
+                "hp": hp,
+                "attack": attack,
+                "defence": defence,
+                "sp_attack": sp_attack,
+                "sp_defence": sp_defence,
+                "speed": speed,
+            }
+        self.base_hp = hp
+        self.base_defence = defence
+        self.base_attack = attack
+        self.base_sp_attack = sp_attack
+        self.base_sp_defence = sp_defence
+        self.base_speed = speed
+        
+        self.level = level
         
         if moves is None:
             self.moves = [scratch]
@@ -20,6 +31,53 @@ class Pokemon:
             self.moves = moves
             
         self.fainted = False
+        
+        #individual values
+        #skal genereres ved laging av pokemon
+        self.IVs = {
+            "hp": 0,
+            "attack": 0,
+            "defence": 0,
+            "sp_attack": 0,
+            "sp_defence": 0,
+            "speed": 0,
+        }
+        
+        #effort values
+        #økes via spilling
+        self.EVs = {
+            "hp": 0,
+            "attack": 0,
+            "defence": 0,
+            "sp_attack": 0,
+            "sp_defence": 0,
+            "speed": 0,
+        }
+
+    
+    #HP kalkuleres litt annerledes enn alle andre stats
+    def calculate_stat(self, stat_name: str):
+        base_stat = self.base_stats[stat_name]
+        EVs = self.EVs[stat_name]
+        IVs = self.IVs[stat_name]
+        
+        match stat_name:
+            case "hp":
+                return math.floor(((2 * base_stat + IVs + math.floor(EVs / 4)) * self.level) / 100) + self.level + 10
+            case _:
+                return math.floor(((2 * base_stat + IVs + math.floor(EVs / 4)) * self.level) / 100) + 5
+    
+    def calculate_all_stats(self, level: int, base_stat: int, EVs: int, IVs: int):
+        """
+        denne funksjonen kalkulerer alle stats til en pokemon.
+        """
+        self.hp = self.calculate_hp(self.base_hp, self.EVs["hp"], self.IVs["hp"])
+        
+        self.attack = self.calculate_stat(self.base_attack, self.EVs["attack"], self.IVs["attack"])
+        self.defence = self.calculate_stat(self.base_attack, self.EVs["defence"], self.IVs["defence"])
+        self.sp_attack = self.calculate_stat(self.base_attack, self.EVs["sp_attack"], self.IVs["sp_attack"])
+        self.sp_defence = self.calculate_stat(self.base_attack, self.EVs["sp_defence"], self.IVs["sp_defence"])
+        self.speed = self.calculate_stat(self.base_attack, self.EVs["speed"], self.IVs["speed"])
     
     def talk(self):
         print(f"jeg er {self.name}")
@@ -42,3 +100,5 @@ class Pokemon:
             return True
         else:
             return False
+    
+    

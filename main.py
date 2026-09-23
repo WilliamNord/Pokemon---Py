@@ -11,6 +11,9 @@ venusaur = Pokemon("venusaur", "grass", "poison", 80, 82, 83, 100, 100, 80, [Sol
 testmon = Pokemon("testmon", "test_element", "None", 1,1,1,1,1,1)
 
 
+print(charizard.calculate_stat("attack"))
+print(charizard.calculate_stat("hp"))
+
 # your_pokemon = charizard
 # enemy_pokemon = venusaur
     
@@ -26,15 +29,15 @@ testmon = Pokemon("testmon", "test_element", "None", 1,1,1,1,1,1)
 # lopunny = make_pokemon("lopunny")
 # print(lopunny.name, lopunny.moves[0].name, lopunny.moves[1].name, lopunny.moves[2].name, lopunny.moves[3].name)
 
-testing = make_pokemon("charizard", ["flamethrower", "focus-punch"])
+# testing = make_pokemon("charizard", ["flamethrower", "focus-punch"])
 
-print(testing.moves[1].power)
+# print(testing.moves[1].power)
 
-your_pokemon_name = ask_for_pokemon("Hvilken pokmeon vil du ha?: ")
-enemy_pokemon_name = ask_for_pokemon("Hvilken pokemon vil du slåss mot?: ")
+# your_pokemon_name = ask_for_pokemon("Hvilken pokmeon vil du ha?: ")
+# enemy_pokemon_name = ask_for_pokemon("Hvilken pokemon vil du slåss mot?: ")
 
-your_pokemon = make_pokemon(your_pokemon_name)
-enemy_pokemon = make_pokemon(enemy_pokemon_name)
+# your_pokemon = make_pokemon(your_pokemon_name)
+# enemy_pokemon = make_pokemon(enemy_pokemon_name)
 
 
-pokemon_battle(your_pokemon, enemy_pokemon)
+# pokemon_battle(your_pokemon, enemy_pokemon)

@@ -37,4 +37,4 @@ Jeg kommer til å bruke en forenklet versjon av den fra generation 1
 
 
 Bugs som må fikses:
- - inputs kan bufferes
+inputs kan bufferes
