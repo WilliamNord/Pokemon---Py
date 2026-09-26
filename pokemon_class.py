@@ -7,6 +7,7 @@ class Pokemon:
         self.name = name
         self.element_1 = element_1
         self.element_2 = element_2
+        self.elements = [element_1, element_2]
         self.base_stats = {
                 "hp": hp,
                 "attack": attack,

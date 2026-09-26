@@ -3,7 +3,7 @@ elementer = {
     "normal": {
         "strong": [],
         "weak": ["rock", "steel"],
-        "immune": ["ghost"],
+        "no_effect": ["ghost"],
     },
     "fire": {
         "strong": ["grass", "ice", "bug", "steel"],
@@ -93,7 +93,25 @@ elementer = {
     
 }
 
-print(elementer["fire"]["strong"][0])
+def check_effectiveness(pk_defender: object, attacking_move: object, elements_nb: int) -> int:
+    """ 
+    Denne funksjonen tar inn én pokemon og ett moves. 
+    Hvis defender sitt element blir funnet i ordboken for elemnter, er attacking_move enten:
+    super effektiv, ikke effektiv, har null effekt eller er nøytralt.
+    disse resultatene peker på henholdsvis koefisientene 2, 0.5, 0 og 1 
+    """
+    pk_element = pk_defender.elements[elements_nb]
+    
+    if pk_element in elementer[attacking_move.element]["strong"]:
+        return 2
+    elif pk_element in elementer[attacking_move.element]["weak"]:
+        return 0.5
+    elif pk_element in elementer[attacking_move.element]["no_effect"]:
+        return 0
+    else:
+        return 1
+
+print()
 
 def show_effectiveness(element: str):
     liste = []
@@ -101,5 +119,3 @@ def show_effectiveness(element: str):
         liste.append(elementer[element]['strong'][i])
         
     print(f"{element} er bra mot {liste}")
-
-show_effectiveness("fire")

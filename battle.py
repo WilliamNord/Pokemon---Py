@@ -1,29 +1,60 @@
 import math
+import random
 import time
 from render import render_battle
+from elements import check_effectiveness
+import random
+
+def rnd_dmg_range(floor, ceil):
+    return random.randint(floor, ceil) / 100
+
+def check_STAB(pokemon: object, move: object) -> float:
+    if move.element in pokemon.elements:
+        return 1.5
+    else:
+        return 1.0
+
+def effectiveness_tekst(defender: object, move: object) -> str:
+    effectiveness = [check_effectiveness(defender, move, 0), check_effectiveness(defender, move, 1)]
+    
+    sum_effectiveness = effectiveness[0] * effectiveness [1]
+    
+    match sum_effectiveness:
+        case 4:
+            return f"{move} er MEGA effektivt!"
+        case 2:
+            return f"{move} er SUPER effektivt!"
+        case 0:
+            return f"{move} hadde INGEN effekt!"
+        case 1:
+            return ""
+    
+    
 
 def calculate_dmg(attacker: object, defender: object, move: object) -> int:
     """
     kalkulerer total dmg gjort mot en annen pokemon med et move
     Kalkulasjonen beregner med physical, special og statur move-kategorier
     """
-    
     power = move.power
     if move.dmg_category == "physical": 
-        print("physical")
         attack = attacker.attack
         defence = defender.defence
     elif move.dmg_category == "special":
-        print("special")
         attack = attacker.sp_attack
         defence = defender.sp_defence
     elif move.dmg_category == "status":
         return 0
-        
-    level = 10
+    
+    level = attacker.level
+    
+    STAB = check_STAB(attacker, move)
+    element_1 = check_effectiveness(defender, move, 0)
+    element_2 = check_effectiveness(defender, move, 1)
+    random = rnd_dmg_range(85, 100)
     critical = 1
-    total_dmg = (((2 * level * critical / 5) + 2) * (power * attack / defence) / 50) + 2
-    total_dmg = math.ceil(total_dmg)
+    core_dmg = math.floor((((2 * level * critical / 5) + 2) * (power * attack / defence) / 50)) + 2
+    total_dmg = math.trunc(core_dmg * STAB * element_1 * element_2 * random)
     return total_dmg
 
 
@@ -78,20 +109,30 @@ def pokemon_battle(your_pokemon: object, enemy_pokemon: object) -> None:
         first = who_goes_first(your_pokemon, enemy_pokemon, your_move, enemy_move)
 
         if first == your_pokemon:
-            render_battle(your_pokemon, enemy_pokemon, f"din {your_pokemon.name} brukte {your_move.name}!")
+            render_battle(your_pokemon, enemy_pokemon, 
+            f"din {your_pokemon.name} brukte {your_move.name}")
+            
             time.sleep(sleep_value)
 
             enemy_damage = calculate_dmg(your_pokemon, enemy_pokemon, your_move)
             enemy_pokemon.take_damage(enemy_damage)
+            
+            if effectiveness_tekst() == "":
+                render_battle(your_pokemon, enemy_pokemon,
+                    f"din {your_pokemon.name} brukte {your_move.name}!\n"
+                    f"{enemy_pokemon.name} tok {enemy_damage} damage"
+                )
+            else:
+                render_battle(your_pokemon, enemy_pokemon,
+                    f"din {your_pokemon.name} brukte {your_move.name}!\n"
+                    f"{effectiveness_tekst()}"
+                    f"{enemy_pokemon.name} tok {enemy_damage} damage"
+                )
 
-            render_battle(your_pokemon, enemy_pokemon,
-                f"din {your_pokemon.name} brukte {your_move.name}!\n"
-                f"{enemy_pokemon.name} tok {enemy_damage} damage!"
-            )
             time.sleep(sleep_value)
 
             if not enemy_pokemon.is_fainted():
-                render_battle(your_pokemon, enemy_pokemon, f"{enemy_pokemon.name} brukte {enemy_move.name}!")
+                render_battle(your_pokemon, enemy_pokemon, f"{enemy_pokemon.name} brukte {enemy_move.name}")
                 time.sleep(sleep_value)
 
                 your_damage = calculate_dmg(enemy_pokemon, your_pokemon, enemy_move)
@@ -100,27 +141,27 @@ def pokemon_battle(your_pokemon: object, enemy_pokemon: object) -> None:
                 render_battle(
                     your_pokemon,
                     enemy_pokemon,
-                    f"{enemy_pokemon.name} brukte {enemy_move.name}!\n"
-                    f"din {your_pokemon.name} tok {your_damage} damage!"
+                    f"{enemy_pokemon.name} brukte {enemy_move.name}\n"
+                    f"din {your_pokemon.name} tok {your_damage} damage"
                 )
                 time.sleep(sleep_value)
 
         else:
-            render_battle(your_pokemon, enemy_pokemon, f"{enemy_pokemon.name} brukte {enemy_move.name}!")
+            render_battle(your_pokemon, enemy_pokemon, f"{enemy_pokemon.name} brukte {enemy_move.name}")
             time.sleep(sleep_value)
 
             your_damage = calculate_dmg(enemy_pokemon, your_pokemon, enemy_move)
             your_pokemon.take_damage(your_damage)
 
             render_battle(your_pokemon, enemy_pokemon,
-                f"{enemy_pokemon.name} brukte {enemy_move.name}!\n"
-                f"din {your_pokemon.name} tok {your_damage} damage!"
+                f"{enemy_pokemon.name} brukte {enemy_move.name}\n"
+                f"din {your_pokemon.name} tok {your_damage} damage"
             )
             time.sleep(sleep_value)
 
             if not your_pokemon.is_fainted():
                 render_battle(your_pokemon, enemy_pokemon,
-                f"din {your_pokemon.name} brukte {your_move.name}!")
+                f"din {your_pokemon.name} brukte {your_move.name}")
                 
                 time.sleep(sleep_value)
 
@@ -128,8 +169,8 @@ def pokemon_battle(your_pokemon: object, enemy_pokemon: object) -> None:
                 enemy_pokemon.take_damage(enemy_damage)
 
                 render_battle(your_pokemon, enemy_pokemon,
-                    f"din {your_pokemon.name} brukte {your_move.name}!\n"
-                    f"{enemy_pokemon.name} tok {enemy_damage} damage!")
+                    f"din {your_pokemon.name} brukte {your_move.name}\n"
+                    f"{enemy_pokemon.name} tok {enemy_damage} damage")
                     
                 time.sleep(sleep_value)
 

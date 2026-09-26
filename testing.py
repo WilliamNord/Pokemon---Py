@@ -1,4 +1,7 @@
-from pokemon_maker import *
+from pokemon_maker import make_move, make_pokemon
+from elements import elementer, check_effectiveness
+from inputs import ask_for_pokemon
+import random
 
 # print(charizard.calculate_stat("attack"))
 # print(charizard.calculate_stat("hp"))
@@ -22,6 +25,18 @@ from pokemon_maker import *
 
 # print(testing.moves[1].power)
 
-move = make_move("swords-dance")
+# random.randint(85, 100)
+
+# tall = 0
+# for i in range(100):
+#     tall = random.randint(85, 100) / 100
+#     print(tall)
+
+move = make_move("waterfall")
+pokemon = make_pokemon(ask_for_pokemon("pokemon here: "))
+
+print(pokemon.elements)
+print(check_effectiveness(pokemon, 0,  move))
+print(check_effectiveness(pokemon, 1, move))
 
 print(move.dmg_category)
