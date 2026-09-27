@@ -1,5 +1,5 @@
 from pokemon_maker import make_move, make_pokemon
-from elements import elementer, check_effectiveness
+from elements import all_elements, check_effectiveness
 from inputs import ask_for_pokemon
 import random
 
@@ -32,11 +32,14 @@ import random
 #     tall = random.randint(85, 100) / 100
 #     print(tall)
 
-move = make_move("waterfall")
-pokemon = make_pokemon(ask_for_pokemon("pokemon here: "))
+# move = make_move("waterfall")
+# pokemon = make_pokemon(ask_for_pokemon("pokemon here: "))
 
-print(pokemon.elements)
-print(check_effectiveness(pokemon, 0,  move))
-print(check_effectiveness(pokemon, 1, move))
+# print(pokemon.elements)
+# print(check_effectiveness(pokemon, 0,  move))
+# print(check_effectiveness(pokemon, 1, move))
 
-print(move.dmg_category)
+# print(move.dmg_category)
+
+for i in range(0):
+    print(i)

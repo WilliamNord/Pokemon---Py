@@ -1,5 +1,5 @@
 #metode for super effektive typer
-elementer = {
+all_elements = {
     "normal": {
         "strong": [],
         "weak": ["rock", "steel"],
@@ -102,20 +102,49 @@ def check_effectiveness(pk_defender: object, attacking_move: object, elements_nb
     """
     pk_element = pk_defender.elements[elements_nb]
     
-    if pk_element in elementer[attacking_move.element]["strong"]:
+    if pk_element in all_elements[attacking_move.element]["strong"]:
         return 2
-    elif pk_element in elementer[attacking_move.element]["weak"]:
+    elif pk_element in all_elements[attacking_move.element]["weak"]:
         return 0.5
-    elif pk_element in elementer[attacking_move.element]["no_effect"]:
+    elif pk_element in all_elements[attacking_move.element]["no_effect"]:
         return 0
     else:
         return 1
-
-print()
+    
+def total_effectiveness(defender: object, attacking_move: object):
+    return check_effectiveness(defender, attacking_move, 0) * check_effectiveness(defender, attacking_move, 1)
+        
 
 def show_effectiveness(element: str):
     liste = []
-    for i in range(len(elementer[element]["strong"])):
-        liste.append(elementer[element]['strong'][i])
+    for i in range(len(all_elements[element]["strong"])):
+        liste.append(all_elements[element]['strong'][i])
         
     print(f"{element} er bra mot {liste}")
+    
+def effectiveness_tekst(sum_effectiveness: int) -> str:
+
+    match sum_effectiveness:
+        case 4:
+            return f"er MEGA effektivt!"
+        case 2:
+            return f"er SUPER effektivt!"
+        case 0:
+            return f"hadde INGEN effekt!"
+        case 1:
+            return ""
+
+# def effectiveness_tekst(defender: object, move: object) -> str:
+#     effectiveness = [check_effectiveness(defender, move, 0), check_effectiveness(defender, move, 1)]
+    
+#     sum_effectiveness = effectiveness[0] * effectiveness [1]
+    
+#     match sum_effectiveness:
+#         case 4:
+#             return f"{move} er MEGA effektivt!"
+#         case 2:
+#             return f"{move} er SUPER effektivt!"
+#         case 0:
+#             return f"{move} hadde INGEN effekt!"
+#         case 1:
+#             return ""

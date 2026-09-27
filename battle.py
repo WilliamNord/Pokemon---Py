@@ -2,36 +2,32 @@ import math
 import random
 import time
 from render import render_battle
-from elements import check_effectiveness
+from elements import check_effectiveness, total_effectiveness
 import random
 
 def rnd_dmg_range(floor, ceil):
     return random.randint(floor, ceil) / 100
+
+def critical() -> bool:
+    """ 
+    Returnerer True eller False basert på en RNG fra 1-24 \n
+    1/24: True \n
+    23/24: False
+    """
+    if random.randint(1,24) == 1:
+        return True
+    else:
+        return False
 
 def check_STAB(pokemon: object, move: object) -> float:
     if move.element in pokemon.elements:
         return 1.5
     else:
         return 1.0
-
-def effectiveness_tekst(defender: object, move: object) -> str:
-    effectiveness = [check_effectiveness(defender, move, 0), check_effectiveness(defender, move, 1)]
-    
-    sum_effectiveness = effectiveness[0] * effectiveness [1]
-    
-    match sum_effectiveness:
-        case 4:
-            return f"{move} er MEGA effektivt!"
-        case 2:
-            return f"{move} er SUPER effektivt!"
-        case 0:
-            return f"{move} hadde INGEN effekt!"
-        case 1:
-            return ""
     
     
 
-def calculate_dmg(attacker: object, defender: object, move: object) -> int:
+def calculate_attack(attacker: object, defender: object, move: object) -> dict:
     """
     kalkulerer total dmg gjort mot en annen pokemon med et move
     Kalkulasjonen beregner med physical, special og statur move-kategorier
@@ -49,13 +45,24 @@ def calculate_dmg(attacker: object, defender: object, move: object) -> int:
     level = attacker.level
     
     STAB = check_STAB(attacker, move)
-    element_1 = check_effectiveness(defender, move, 0)
-    element_2 = check_effectiveness(defender, move, 1)
+    effectiveness = total_effectiveness()
     random = rnd_dmg_range(85, 100)
-    critical = 1
+    if critical() == True:
+        critical = 1.5
+    else:
+        critical = 1
     core_dmg = math.floor((((2 * level * critical / 5) + 2) * (power * attack / defence) / 50)) + 2
-    total_dmg = math.trunc(core_dmg * STAB * element_1 * element_2 * random)
-    return total_dmg
+    total_dmg = math.trunc(core_dmg * STAB * effectiveness * random)
+    
+    results = {
+        "attacker_name": attacker.name,
+        "defencer_name": defender.name,
+        "move_name": move.name,
+        "damage": total_dmg,
+        "effectiveness": effectiveness,
+        "critical": critical
+    }
+    return results
 
 
 def who_goes_first(your_pokemon: object, enemy_pokemon: object, your_move: object, enemy_move: object) -> object:
@@ -72,7 +79,9 @@ def who_goes_first(your_pokemon: object, enemy_pokemon: object, your_move: objec
 
 
 def ask_player_move(your_pokemon: object) -> object:
-    #denne funksjonen spør spilleren om hvilken av alle moves til {your_pokemon} som de vil bruke
+    """ 
+    denne funksjonen spør spilleren om hvilken av alle moves til dere pokemon som de vil bruke
+    """
     while True:
         print("\n")
         for i, move in enumerate(your_pokemon.moves):
@@ -101,7 +110,7 @@ def pokemon_battle(your_pokemon: object, enemy_pokemon: object) -> None:
 
     
     while not your_pokemon.is_fainted() and not enemy_pokemon.is_fainted():
-        render_battle(your_pokemon, enemy_pokemon,)
+        render_battle(your_pokemon, enemy_pokemon)
 
         your_move = ask_player_move(your_pokemon)
         enemy_move = enemy_pokemon.moves[0]  # midlertidig enemy AI
@@ -114,20 +123,14 @@ def pokemon_battle(your_pokemon: object, enemy_pokemon: object) -> None:
             
             time.sleep(sleep_value)
 
-            enemy_damage = calculate_dmg(your_pokemon, enemy_pokemon, your_move)
+            attack_results = calculate_attack(your_pokemon, enemy_pokemon, your_move)
+            enemy_damage = attack_results["damage"]
             enemy_pokemon.take_damage(enemy_damage)
             
-            if effectiveness_tekst() == "":
-                render_battle(your_pokemon, enemy_pokemon,
-                    f"din {your_pokemon.name} brukte {your_move.name}!\n"
-                    f"{enemy_pokemon.name} tok {enemy_damage} damage"
-                )
-            else:
-                render_battle(your_pokemon, enemy_pokemon,
-                    f"din {your_pokemon.name} brukte {your_move.name}!\n"
-                    f"{effectiveness_tekst()}"
-                    f"{enemy_pokemon.name} tok {enemy_damage} damage"
-                )
+            render_battle(your_pokemon, enemy_pokemon,
+                f"din {your_pokemon.name} brukte {your_move.name}!\n"
+                f"{enemy_pokemon.name} tok {enemy_damage} damage"
+            )
 
             time.sleep(sleep_value)
 
@@ -135,12 +138,11 @@ def pokemon_battle(your_pokemon: object, enemy_pokemon: object) -> None:
                 render_battle(your_pokemon, enemy_pokemon, f"{enemy_pokemon.name} brukte {enemy_move.name}")
                 time.sleep(sleep_value)
 
-                your_damage = calculate_dmg(enemy_pokemon, your_pokemon, enemy_move)
+                attack_results = calculate_attack(enemy_pokemon, your_pokemon, enemy_move)
+                your_damage = ["damage"]
                 your_pokemon.take_damage(your_damage)
 
-                render_battle(
-                    your_pokemon,
-                    enemy_pokemon,
+                render_battle(your_pokemon, enemy_pokemon,
                     f"{enemy_pokemon.name} brukte {enemy_move.name}\n"
                     f"din {your_pokemon.name} tok {your_damage} damage"
                 )
@@ -150,7 +152,8 @@ def pokemon_battle(your_pokemon: object, enemy_pokemon: object) -> None:
             render_battle(your_pokemon, enemy_pokemon, f"{enemy_pokemon.name} brukte {enemy_move.name}")
             time.sleep(sleep_value)
 
-            your_damage = calculate_dmg(enemy_pokemon, your_pokemon, enemy_move)
+            attack_results = calculate_attack(enemy_pokemon, your_pokemon, enemy_move)
+            your_damage = attack_results["damage"]
             your_pokemon.take_damage(your_damage)
 
             render_battle(your_pokemon, enemy_pokemon,
@@ -165,7 +168,8 @@ def pokemon_battle(your_pokemon: object, enemy_pokemon: object) -> None:
                 
                 time.sleep(sleep_value)
 
-                enemy_damage = calculate_dmg(your_pokemon, enemy_pokemon, your_move)
+                attack_results = calculate_attack(your_pokemon, enemy_pokemon, your_move)
+                enemy_damage = attack_results["damage"]
                 enemy_pokemon.take_damage(enemy_damage)
 
                 render_battle(your_pokemon, enemy_pokemon,

@@ -1,8 +1,8 @@
 from move_class import Move
 from pokemon_class import Pokemon
 from move_bank import *
-from battle import pokemon_battle, calculate_dmg
-from pokemon_maker import make_pokemon, does_pokemon_exist
+from battle import pokemon_battle
+from pokemon_maker import make_pokemon
 from inputs import ask_for_pokemon
 
 charizard = Pokemon("charizard", "fire", "None",100, 90, 70, 70, 50, 65, [flamethrower, scratch, gun])
