@@ -1,7 +1,9 @@
 from pokemon_maker import make_move, make_pokemon
+from pokemon_class import Pokemon
 from elements import all_elements, check_effectiveness
 from inputs import ask_for_pokemon
 import random
+from battle import pokemon_battle, is_critical
 
 # print(charizard.calculate_stat("attack"))
 # print(charizard.calculate_stat("hp"))
@@ -63,3 +65,18 @@ print()
 for x, indre_liste in enumerate([["jeg", "deg"], ["du", "meg"]]):
     for y, z in enumerate(indre_liste):
         print(x, y, z)
+    
+# while True:
+#     bulb = make_pokemon("bulbasaur",["vine-whip"], 5)
+#     char = make_pokemon("charmander", ["fire-punch"], 5)
+#     pokemon_battle(char, bulb)
+    
+# hit = 0
+# tot = 0
+# for i in range(1000000):
+#     if is_critical() == 1:
+#         hit += 1
+#         tot += 1
+#     else:
+#         tot += 1
+# print(f"chance: {(hit/tot)*100}")

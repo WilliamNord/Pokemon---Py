@@ -53,15 +53,21 @@ def calculate_attack(attacker: object, defender: object, move: object) -> dict:
     STAB = check_STAB(attacker, move)
     effectiveness = total_effectiveness(defender, move)
     rnd_dmg_mod = rnd_dmg_range(85, 100)
-    
     critical_hit = is_critical()
+    
+    level_calc = math.floor((2 * level / 5) + 2)
+
+    core_dmg = math.floor((level_calc * power * attack / defence) / 50) + 2 
+    
     if critical_hit:
-        critical_multiplyer = 1.5
-    else:
-        critical_multiplyer = 1
-        
-    core_dmg = math.floor((((2 * level * critical_multiplyer / 5) + 2) * (power * attack / defence) / 50)) + 2
-    total_dmg = math.trunc(core_dmg * STAB * effectiveness * rnd_dmg_mod)
+        core_dmg = math.floor(core_dmg * 1.5)
+    
+    total_dmg = math.floor(core_dmg * STAB)
+    total_dmg = math.floor(total_dmg * effectiveness)
+    total_dmg = math.floor(total_dmg * rnd_dmg_mod)
+    
+    if total_dmg == 0 and effectiveness > 0:
+        total_dmg = 1
     
     results = {
         "attacker_name": attacker.name,

@@ -11,7 +11,7 @@ all_elements = {
         "no_effect": []
         },
     "water": {
-        "strong": ["fire", "ground","electric"],
+        "strong": ["fire", "ground"],
         "weak": ["grass", "electric"],
         "no_effect": [],
     },

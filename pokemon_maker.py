@@ -58,7 +58,7 @@ def make_move(move_name: str) -> object:
     )
 
 
-def make_pokemon(pokemon_name, move_names = None) -> object:
+def make_pokemon(pokemon_name, move_names: list = None, level: int = 100) -> object:
     """
     Henter en Pokémon fra PokéAPI og lager et nytt Pokemon-objekt.
     Hvis moves ikke er spesifisert vil moves bli hentet fra pokeAPI
@@ -92,6 +92,11 @@ def make_pokemon(pokemon_name, move_names = None) -> object:
     for move_name in move_names:
         move = make_move(move_name)
         moves.append(move)
+    
+    if level > 100:
+        level = 100
+    if level < 1:
+        level = 1
 
     return Pokemon(
         name = name,
@@ -103,7 +108,8 @@ def make_pokemon(pokemon_name, move_names = None) -> object:
         sp_attack = sp_attack,
         sp_defence = sp_defence,
         speed = speed,
-        moves = moves
+        moves = moves,
+        level = level,
     )
     
     
