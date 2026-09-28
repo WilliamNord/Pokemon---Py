@@ -53,7 +53,7 @@ def make_move(move_name: str) -> object:
         element = data["type"]["name"],
         power = data["power"] or 0,
         dmg_category = data["damage_class"]["name"],
-        accuracy = data["accuracy"] or 100,
+        accuracy = data["accuracy"] or None,
         priority = data["priority"]
     )
 

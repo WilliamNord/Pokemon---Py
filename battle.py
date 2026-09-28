@@ -5,7 +5,7 @@ from render import render_battle
 from elements import check_effectiveness, total_effectiveness
 import random
 
-def rnd_dmg_range(floor, ceil):
+def rnd_dmg_range(floor: int, ceil: int) -> float:
     return random.randint(floor, ceil) / 100
 
 def is_critical() -> bool:
@@ -19,18 +19,38 @@ def is_critical() -> bool:
     else:
         return False
 
+def check_if_move_hit(move: object) -> bool:
+    """
+    Bruker accuracy-en til {move} til å tilfeldig si om trekket traff eller ikke \n
+    Moves som skal ha uendelig accuracy eller fungere uavhengig av det, får en verdi av None og returnerer True
+    """
+    if move.accuracy == None:
+        return True
+    
+    roll = random.randint(1, 100)
+    return roll <= move.accuracy
+
 def check_STAB(pokemon: object, move: object) -> float:
     if move.element in pokemon.elements:
         return 1.5
     else:
         return 1.0
-    
 
-def calculate_attack(attacker: object, defender: object, move: object) -> dict:
+    
+def calculate_attack(attacker: object, defender: object, used_move: object) -> dict:
     """
     kalkulerer total dmg gjort mot en annen pokemon med et move
     Kalkulasjonen beregner med physical, special og statur move-kategorier
     """
+    move = used_move
+    results = {"attacker_name": attacker.name,
+        "defender_name": defender.name,
+        "move_name": move.name,
+        "defender_hp_before_hit": defender.hp,
+        }
+    
+
+    
     power = move.power
     if move.dmg_category == "physical": 
         attack = attacker.attack
@@ -39,14 +59,8 @@ def calculate_attack(attacker: object, defender: object, move: object) -> dict:
         attack = attacker.sp_attack
         defence = defender.sp_defence
     elif move.dmg_category == "status":
-        return {"attacker_name": attacker.name,
-            "defender_name": defender.name,
-            "move_name": move.name,
-            "damage": 0,
-            "effectiveness": 1.0,
-            "critical": False,
-            "defender_hp_before_hit": defender.hp,
-            }
+        results.update({"damage": 0, "effectiveness": 1.0, "critical": False, "move_hit": True})
+        return results
     
     level = attacker.level
     
@@ -69,15 +83,21 @@ def calculate_attack(attacker: object, defender: object, move: object) -> dict:
     if total_dmg == 0 and effectiveness > 0:
         total_dmg = 1
     
-    results = {
-        "attacker_name": attacker.name,
-        "defender_name": defender.name,
-        "move_name": move.name,
+    move_hit = bool
+    if check_if_move_hit(move):
+        move_hit = True
+    else:
+        move_hit = False
+        total_dmg = 0
+    
+    results.update({
         "damage": total_dmg,
         "effectiveness": effectiveness,
         "critical": critical_hit,
+        "move_hit": move_hit,
         "defender_hp_before_hit": defender.hp,
-    }
+        })
+
     return results
 
 

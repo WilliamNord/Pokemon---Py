@@ -65,7 +65,7 @@ def get_hp_bar(pokemon: object, hp: int = None, bar_length=20):
 
 
 def battle_text(results):
-    if not results:
+    if results == None:
         return []
 
     attacker_name = results["attacker_name"]
@@ -80,6 +80,9 @@ def battle_text(results):
     text_list.append(
         f"{attacker_name} brukte {move_name}"
     )
+    if results["move_hit"] == False:
+        text_list.append(f"{results['move_name']} bommet!")
+        return text_list
 
     effectiveness_text = effectiveness_tekst(effectiveness)
 
@@ -87,7 +90,7 @@ def battle_text(results):
         text_list.append(f"{move_name} er {effectiveness_text}")
 
     if critical:
-        text_list.append("critical hit")
+        text_list.append("critical hit!")
 
     text_list.append(
         f"{defender_name} tok {damage} damage"
@@ -104,13 +107,10 @@ def render_battle(your_pokemon, enemy_pokemon, results=None):
     spillerens og motstanderens Pokémon. Hvis det er oppgitt en melding,
     vises denne under HP for å informere om hva som skjedde.
     """
-    text_list = battle_text(results)
-    old_text = []
-
     your_hp = your_pokemon.hp
     enemy_hp = enemy_pokemon.hp
     
-    if not text_list:
+    if results == None:
         clear_screen()
 
         print(f"Battle: {your_pokemon.name} vs {enemy_pokemon.name}")
@@ -123,40 +123,42 @@ def render_battle(your_pokemon, enemy_pokemon, results=None):
         print()
         
         return
-
-    # Viser én ny melding om gangen
-    for index, text in enumerate(text_list):
-        old_text.append(text)
-
-        # her prøver jeg å oppdatere HP bare når "tok damage" teksten vises
-        if index < len(text_list) - 1:
-            your_hp = your_pokemon.hp
-            enemy_hp = enemy_pokemon.hp
-
-            if results["defender_name"] == your_pokemon.name:
-                your_hp = results["defender_hp_before_hit"]
-
-            elif results["defender_name"] == enemy_pokemon.name:
-                enemy_hp = results["defender_hp_before_hit"]
+    else:
+        text_list = battle_text(results)
+        old_text = []
         
-        # På siste melding, altså "tok damage":
-        # bruk den nye HP-en
-        else:
-            your_hp = your_pokemon.hp
-            enemy_hp = enemy_pokemon.hp
+        # Viser én ny melding om gangen
+        for index, text in enumerate(text_list):
+            old_text.append(text)
+
+            # her prøver jeg å oppdatere HP bare når "tok damage" teksten vises
+            if index < len(text_list) - 1:
+                your_hp = your_pokemon.hp
+                enemy_hp = enemy_pokemon.hp
+
+                if results["defender_name"] == your_pokemon.name:
+                    your_hp = results["defender_hp_before_hit"]
                 
-        clear_screen()
+                elif results["defender_name"] == enemy_pokemon.name:
+                    enemy_hp = results["defender_hp_before_hit"]
+            
+            else:
+                your_hp = your_pokemon.hp
+                enemy_hp = enemy_pokemon.hp
+                    
+            clear_screen()
 
-        print(f"Battle: {your_pokemon.name} vs {enemy_pokemon.name}")
-        print()
+            print(f"Battle: {your_pokemon.name} vs {enemy_pokemon.name}")
+            print()
 
-        print(f"{your_pokemon.name}: {get_hp_bar(your_pokemon, your_hp)} {your_hp}/{your_pokemon.max_hp} HP")
-        print()
+            print(f"{your_pokemon.name}: {get_hp_bar(your_pokemon, your_hp)} {your_hp}/{your_pokemon.max_hp} HP")
+            print()
 
-        print(f"{enemy_pokemon.name}: {get_hp_bar(enemy_pokemon, enemy_hp)} {enemy_hp}/{enemy_pokemon.max_hp} HP")
-        print()
+            print(f"{enemy_pokemon.name}: {get_hp_bar(enemy_pokemon, enemy_hp)} {enemy_hp}/{enemy_pokemon.max_hp} HP")
+            print()
 
-        for message in old_text:
-            print(message)
+            for message in old_text:
+                print(message)
 
-        time.sleep(sleep_time)
+            time.sleep(sleep_time)
+        

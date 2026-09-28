@@ -3,7 +3,7 @@ from pokemon_class import Pokemon
 from elements import all_elements, check_effectiveness
 from inputs import ask_for_pokemon
 import random
-from battle import pokemon_battle, is_critical
+from battle import *
 
 # print(charizard.calculate_stat("attack"))
 # print(charizard.calculate_stat("hp"))
@@ -66,10 +66,10 @@ for x, indre_liste in enumerate([["jeg", "deg"], ["du", "meg"]]):
     for y, z in enumerate(indre_liste):
         print(x, y, z)
     
-# while True:
-#     bulb = make_pokemon("bulbasaur",["vine-whip"], 5)
-#     char = make_pokemon("charmander", ["fire-punch"], 5)
-#     pokemon_battle(char, bulb)
+while True:
+    your = make_pokemon("machamp")
+    enemy = make_pokemon("seedot")
+    pokemon_battle(your, enemy)
     
 # hit = 0
 # tot = 0
@@ -80,3 +80,15 @@ for x, indre_liste in enumerate([["jeg", "deg"], ["du", "meg"]]):
 #     else:
 #         tot += 1
 # print(f"chance: {(hit/tot)*100}")
+
+
+# move = make_move("focus-blast")
+# print(move.accuracy)
+
+# hit = 0
+# for i in range(100):
+#     if check_for_accuracy(move):
+#         hit += 1
+
+# print(f"chance: {hit/ 100}")
+    
