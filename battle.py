@@ -8,7 +8,7 @@ import random
 def rnd_dmg_range(floor, ceil):
     return random.randint(floor, ceil) / 100
 
-def critical() -> bool:
+def is_critical() -> bool:
     """ 
     Returnerer True eller False basert på en RNG fra 1-24 \n
     1/24: True \n
@@ -25,7 +25,6 @@ def check_STAB(pokemon: object, move: object) -> float:
     else:
         return 1.0
     
-    
 
 def calculate_attack(attacker: object, defender: object, move: object) -> dict:
     """
@@ -40,27 +39,38 @@ def calculate_attack(attacker: object, defender: object, move: object) -> dict:
         attack = attacker.sp_attack
         defence = defender.sp_defence
     elif move.dmg_category == "status":
-        return 0
+        return {"attacker_name": attacker.name,
+            "defender_name": defender.name,
+            "move_name": move.name,
+            "damage": 0,
+            "effectiveness": 1.0,
+            "critical": False,
+            "defender_hp_before_hit": defender.hp,
+            }
     
     level = attacker.level
     
     STAB = check_STAB(attacker, move)
-    effectiveness = total_effectiveness()
-    random = rnd_dmg_range(85, 100)
-    if critical() == True:
-        critical = 1.5
+    effectiveness = total_effectiveness(defender, move)
+    rnd_dmg_mod = rnd_dmg_range(85, 100)
+    
+    critical_hit = is_critical()
+    if critical_hit:
+        critical_multiplyer = 1.5
     else:
-        critical = 1
-    core_dmg = math.floor((((2 * level * critical / 5) + 2) * (power * attack / defence) / 50)) + 2
-    total_dmg = math.trunc(core_dmg * STAB * effectiveness * random)
+        critical_multiplyer = 1
+        
+    core_dmg = math.floor((((2 * level * critical_multiplyer / 5) + 2) * (power * attack / defence) / 50)) + 2
+    total_dmg = math.trunc(core_dmg * STAB * effectiveness * rnd_dmg_mod)
     
     results = {
         "attacker_name": attacker.name,
-        "defencer_name": defender.name,
+        "defender_name": defender.name,
         "move_name": move.name,
         "damage": total_dmg,
         "effectiveness": effectiveness,
-        "critical": critical
+        "critical": critical_hit,
+        "defender_hp_before_hit": defender.hp,
     }
     return results
 
@@ -118,67 +128,35 @@ def pokemon_battle(your_pokemon: object, enemy_pokemon: object) -> None:
         first = who_goes_first(your_pokemon, enemy_pokemon, your_move, enemy_move)
 
         if first == your_pokemon:
-            render_battle(your_pokemon, enemy_pokemon, 
-            f"din {your_pokemon.name} brukte {your_move.name}")
-            
-            time.sleep(sleep_value)
-
             attack_results = calculate_attack(your_pokemon, enemy_pokemon, your_move)
             enemy_damage = attack_results["damage"]
             enemy_pokemon.take_damage(enemy_damage)
+
+            render_battle(your_pokemon, enemy_pokemon, attack_results)
             
-            render_battle(your_pokemon, enemy_pokemon,
-                f"din {your_pokemon.name} brukte {your_move.name}!\n"
-                f"{enemy_pokemon.name} tok {enemy_damage} damage"
-            )
-
-            time.sleep(sleep_value)
-
             if not enemy_pokemon.is_fainted():
-                render_battle(your_pokemon, enemy_pokemon, f"{enemy_pokemon.name} brukte {enemy_move.name}")
-                time.sleep(sleep_value)
-
                 attack_results = calculate_attack(enemy_pokemon, your_pokemon, enemy_move)
-                your_damage = ["damage"]
+                your_damage = attack_results["damage"]
                 your_pokemon.take_damage(your_damage)
-
-                render_battle(your_pokemon, enemy_pokemon,
-                    f"{enemy_pokemon.name} brukte {enemy_move.name}\n"
-                    f"din {your_pokemon.name} tok {your_damage} damage"
-                )
-                time.sleep(sleep_value)
-
+                
+                render_battle(your_pokemon, enemy_pokemon, attack_results)
         else:
-            render_battle(your_pokemon, enemy_pokemon, f"{enemy_pokemon.name} brukte {enemy_move.name}")
-            time.sleep(sleep_value)
-
+            
             attack_results = calculate_attack(enemy_pokemon, your_pokemon, enemy_move)
             your_damage = attack_results["damage"]
             your_pokemon.take_damage(your_damage)
-
-            render_battle(your_pokemon, enemy_pokemon,
-                f"{enemy_pokemon.name} brukte {enemy_move.name}\n"
-                f"din {your_pokemon.name} tok {your_damage} damage"
-            )
-            time.sleep(sleep_value)
+            
+            render_battle(your_pokemon, enemy_pokemon, attack_results)
 
             if not your_pokemon.is_fainted():
-                render_battle(your_pokemon, enemy_pokemon,
-                f"din {your_pokemon.name} brukte {your_move.name}")
                 
-                time.sleep(sleep_value)
-
                 attack_results = calculate_attack(your_pokemon, enemy_pokemon, your_move)
                 enemy_damage = attack_results["damage"]
                 enemy_pokemon.take_damage(enemy_damage)
 
-                render_battle(your_pokemon, enemy_pokemon,
-                    f"din {your_pokemon.name} brukte {your_move.name}\n"
-                    f"{enemy_pokemon.name} tok {enemy_damage} damage")
-                    
-                time.sleep(sleep_value)
+                render_battle(your_pokemon, enemy_pokemon, attack_results)
 
-    render_battle(your_pokemon, enemy_pokemon, "")
+    render_battle(your_pokemon, enemy_pokemon)
 
     if your_pokemon.is_fainted():
         print(f"Du tapte mot {enemy_pokemon.name}")

@@ -43,3 +43,23 @@ import random
 
 for i in range(0):
     print(i)
+
+print()
+for x, y in enumerate(["jeg", "deg"]):
+    print(type(x), x)
+    print(type(y), y)
+
+print()
+for x in enumerate(["jeg", "deg"]):
+    print(type(x), x)
+
+print()
+for x, (y,z) in enumerate([["jeg", "deg"], ["du", "meg"]]):
+    print(type(x), x)
+    print(type(y), y)
+    print(type(z), z)
+
+print()
+for x, indre_liste in enumerate([["jeg", "deg"], ["du", "meg"]]):
+    for y, z in enumerate(indre_liste):
+        print(x, y, z)

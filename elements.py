@@ -129,11 +129,14 @@ def effectiveness_tekst(sum_effectiveness: int) -> str:
             return f"er MEGA effektivt!"
         case 2:
             return f"er SUPER effektivt!"
+        case 1:
+            return f""
+        case 0.5 | 0.25:
+            return f"er ikke veldig effektivt"
         case 0:
             return f"hadde INGEN effekt!"
-        case 1:
-            return ""
 
+print(effectiveness_tekst(0.25))
 # def effectiveness_tekst(defender: object, move: object) -> str:
 #     effectiveness = [check_effectiveness(defender, move, 0), check_effectiveness(defender, move, 1)]
     

@@ -38,3 +38,4 @@ Jeg kommer til å bruke en forenklet versjon av den fra generation 1
 
 Bugs som må fikses:
 inputs kan bufferes
+input feil i ask for move må renderes bedre

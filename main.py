@@ -12,7 +12,7 @@ testmon = Pokemon("testmon", "test_element", "None", 1,1,1,1,1,1)
 
 
 
-your_pokemon_name = ask_for_pokemon("Hvilken pokmeon vil du ha?: ")
+your_pokemon_name = ask_for_pokemon("Hvilken pokemon vil du ha?: ")
 enemy_pokemon_name = ask_for_pokemon("Hvilken pokemon vil du slåss mot?: ")
 
 your_pokemon = make_pokemon(your_pokemon_name)
