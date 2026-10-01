@@ -24,6 +24,29 @@ def get_stat(stats, stat_name):
 
     raise ValueError(f"Fant ikke stat '{stat_name}'")
 
+def get_moves_available_for_lvl(data, level):
+    """ 
+    Denne funksjonen returnerer alle moves som en pokemon kan lære, sortert i kategorier \n
+    kategoriene er moves som læres fra level-up og moves som læres med en machine (TMs/HMs)
+    """
+    moves_from_machine = set()
+    moves_from_level_up = set()
+    
+    for move_entry in data["moves"]:
+        move_name = move_entry["move"]["name"]
+        
+        for details in move_entry["version_group_details"]:
+            
+            if details["level_learned_at"] <= level:
+                method = details["move_learn_method"]["name"]
+                
+                if method == "level-up":
+                    moves_from_level_up.add(move_name)
+                elif method == "machine":
+                    moves_from_machine.add(move_name)
+                    
+    return list(moves_from_level_up), list(moves_from_machine)
+                
 
 def get_pokemon_move_names(data, limit=4):
     """
@@ -36,7 +59,7 @@ def get_pokemon_move_names(data, limit=4):
         move_name = move_data["move"]["name"]
         move_names.append(move_name)
 
-        if len(move_names) == limit:
+        if len(move_names) >= limit:
             break
 
     return move_names
@@ -58,7 +81,7 @@ def make_move(move_name: str) -> object:
     )
 
 
-def make_pokemon(pokemon_name, move_names: list = None, level: int = 100) -> object:
+def make_pokemon(pokemon_name: str, move_names: list = None, level: int = 100) -> object:
     """
     Henter en Pokémon fra PokéAPI og lager et nytt Pokemon-objekt.
     Hvis moves ikke er spesifisert vil moves bli hentet fra pokeAPI
@@ -67,6 +90,8 @@ def make_pokemon(pokemon_name, move_names: list = None, level: int = 100) -> obj
     pokemon_name = pokemon_name.strip().lower()
     
     data = get_api_data(f"pokemon/{pokemon_name.lower()}")
+    species_data = get_api_data(f"pokemon-species/{pokemon_name.lower()}")
+    
 
     stats = data["stats"]
     
@@ -83,6 +108,8 @@ def make_pokemon(pokemon_name, move_names: list = None, level: int = 100) -> obj
     sp_attack = get_stat(stats, "special-attack")
     sp_defence = get_stat(stats, "special-defense")
     speed = get_stat(stats, "speed")
+    base_exp = data["base_experience"]
+    catch_rate = species_data["capture_rate"]
 
     if move_names is None:
         move_names = get_pokemon_move_names(data, limit=4)
@@ -108,6 +135,8 @@ def make_pokemon(pokemon_name, move_names: list = None, level: int = 100) -> obj
         sp_attack = sp_attack,
         sp_defence = sp_defence,
         speed = speed,
+        base_exp = base_exp,
+        catch_rate = catch_rate,
         moves = moves,
         level = level,
     )

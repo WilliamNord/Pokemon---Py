@@ -96,3 +96,15 @@ pkm = make_pokemon("iron-hands")
 print(pkm.moves)
 print(len(pkm.moves))
 print("random move:", pick_random_move(pkm))
+
+liste = ["home", "school"]
+print(liste.index("home"))
+
+# if type(liste.index("hime")) == int:
+#     print("it is int")
+# print(make_pokemon(level=5, pokemon_name="charmander").level)
+# print(ask_player_location(liste), type(ask_player_location(liste)))
+
+
+data_test = get_api_data(f"pokemon/{"charizard"}")
+print(get_moves_available_for_lvl(data_test, 100)[0])

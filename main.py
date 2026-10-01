@@ -5,10 +5,10 @@ from battle import pokemon_battle
 from pokemon_maker import make_pokemon
 from inputs import ask_for_pokemon
 
-charizard = Pokemon("charizard", "fire", "None",100, 90, 70, 70, 50, 65, [flamethrower, scratch, gun])
-bulbasaur = Pokemon("bulbasaur", "grass", "None", 45, 49, 49, 65, 65, 45, [Seed_Bomb, grass_knot, scratch])
-venusaur = Pokemon("venusaur", "grass", "poison", 80, 82, 83, 100, 100, 80, [Solar_Beam, Razor_Leaf])
-testmon = Pokemon("testmon", "test_element", "None", 1,1,1,1,1,1)
+# charizard = Pokemon("charizard", "fire", "None",100, 90, 70, 70, 50, 65, [flamethrower, scratch, gun])
+# bulbasaur = Pokemon("bulbasaur", "grass", "None", 45, 49, 49, 65, 65, 45, [Seed_Bomb, grass_knot, scratch])
+# venusaur = Pokemon("venusaur", "grass", "poison", 80, 82, 83, 100, 100, 80, [Solar_Beam, Razor_Leaf])
+# testmon = Pokemon("testmon", "test_element", "None", 1,1,1,1,1,1)
 
 
 

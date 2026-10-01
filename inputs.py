@@ -16,3 +16,28 @@ def ask_for_pokemon(prompt: str) -> str:
 
         print(f"Fant ikke Pokémonen '{pokemon_name}'.")
         print("Prøv igjen.")
+
+def ask_player_location(options: list):
+    for x, name in enumerate(options):
+        print((x + 1), name)
+    
+    while True:
+        choice = input("hvor vil du gå?: ").lower().strip()
+        
+        if choice.isdigit():
+            index = int(choice)
+            
+            if 1 <= index <= len(options):
+                return options[index - 1]
+            else:
+                print(f"ugyldig nummer, du må skrivet ett tall mellom 1 og {len(options)}")
+                continue
+        
+        options_lower = [opt.lower() for opt in options]
+        
+        if choice in options_lower:
+            return options[options.index(choice)]
+        
+        
+        
+        print("ugyldig index eller navn, prøv igjen")
