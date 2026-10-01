@@ -3,7 +3,7 @@ import math
 
 #Klassen for pokemon objekter
 class Pokemon:
-    def __init__(self, name: str, element_1: str, element_2: str, hp: int, attack: int, defence: int, sp_attack: int, sp_defence: int, speed: int, moves = None, level = 100, fainted = False):
+    def __init__(self, name: str, element_1: str, element_2: str, hp: int, attack: int, defence: int, sp_attack: int, sp_defence: int, speed: int, moves:list = None, level = 100, fainted = False):
         self.name = name
         self.element_1 = element_1
         self.element_2 = element_2

@@ -36,6 +36,10 @@ def check_STAB(pokemon: object, move: object) -> float:
     else:
         return 1.0
 
+def pick_random_move(pokemon: object):
+    return (random.randint(1, len(pokemon.moves)) - 1)
+    
+
     
 def calculate_attack(attacker: object, defender: object, used_move: object) -> dict:
     """
@@ -50,7 +54,6 @@ def calculate_attack(attacker: object, defender: object, used_move: object) -> d
         }
     
 
-    
     power = move.power
     if move.dmg_category == "physical": 
         attack = attacker.attack
@@ -149,7 +152,7 @@ def pokemon_battle(your_pokemon: object, enemy_pokemon: object) -> None:
         render_battle(your_pokemon, enemy_pokemon)
 
         your_move = ask_player_move(your_pokemon)
-        enemy_move = enemy_pokemon.moves[0]  # midlertidig enemy AI
+        enemy_move = enemy_pokemon.moves[pick_random_move(enemy_pokemon)]  # midlertidig enemy AI
 
         first = who_goes_first(your_pokemon, enemy_pokemon, your_move, enemy_move)
 

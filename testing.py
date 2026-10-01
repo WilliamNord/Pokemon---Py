@@ -1,8 +1,8 @@
-from pokemon_maker import make_move, make_pokemon
-from pokemon_class import Pokemon
-from elements import all_elements, check_effectiveness
-from inputs import ask_for_pokemon
 import random
+from pokemon_maker import *
+from pokemon_class import *
+from elements import *
+from inputs import *
 from battle import *
 
 # print(charizard.calculate_stat("attack"))
@@ -66,10 +66,10 @@ for x, indre_liste in enumerate([["jeg", "deg"], ["du", "meg"]]):
     for y, z in enumerate(indre_liste):
         print(x, y, z)
     
-while True:
-    your = make_pokemon("machamp")
-    enemy = make_pokemon("seedot")
-    pokemon_battle(your, enemy)
+# while True:
+#     your = make_pokemon("machamp")
+#     enemy = make_pokemon("seedot")
+#     pokemon_battle(your, enemy)
     
 # hit = 0
 # tot = 0
@@ -91,4 +91,8 @@ while True:
 #         hit += 1
 
 # print(f"chance: {hit/ 100}")
-    
+
+pkm = make_pokemon("iron-hands")
+print(pkm.moves)
+print(len(pkm.moves))
+print("random move:", pick_random_move(pkm))
