@@ -105,6 +105,7 @@ print(liste.index("home"))
 # print(make_pokemon(level=5, pokemon_name="charmander").level)
 # print(ask_player_location(liste), type(ask_player_location(liste)))
 
-
-data_test = get_api_data(f"pokemon/{"charizard"}")
+pokemon = ask_for_pokemon("pokemon: ")
+data_test = get_api_data(f"pokemon/{pokemon}")
 print(get_moves_available_for_lvl(data_test, 100)[0])
+print(get_moves_available_for_lvl(data_test, 100)[0][-4:])

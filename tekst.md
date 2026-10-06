@@ -52,3 +52,4 @@ Utvikling av gameloop:
 5. legge til exp_rate (hvor mye exp som trengs for lvl up)
 
 
+ENDRE MOVE FRA API TIL Å HENTE ALLE MOVES FRA LEVEL_UP IKKE BARE FOR LEVEL

@@ -1,59 +1,58 @@
+# import os
+# import time
+# from elements import effectiveness_tekst
+
+# sleep_time = 1.5
+
+
+
+# def clear_screen():
+#     os.system("cls" if os.name == "nt" else "clear")
+
+
+# def get_hp_bar(pokemon: object, bar_length=20):
+#     hp_ratio = pokemon.hp / pokemon.max_hp
+#     filled = round(hp_ratio * bar_length)
+#     empty = bar_length - filled
+#     return "|" + "█" * filled + "_" * empty + "|"
+
+
+# def battle_text(results: dict) -> list:
+    
+#     if not results:
+#         return []
+    
+#     attacker_name = results["attacker_name"]
+#     defender_name = results["defender_name"]
+#     move_name = results["move_name"]
+#     total_effectiveness = results["effectiveness"]
+#     critical = results["critical"]
+#     damage = results["damage"]
+
+#     text_list = []
+#     text_list.append(f"{attacker_name} brukte {move_name}\n")
+#     if effectiveness_tekst(total_effectiveness) != "":
+#         text_list.append(f"{move_name} {effectiveness_tekst(total_effectiveness)}")
+#     if critical:
+#         text_list.append(f"det var et critical hit!")
+#     text_list.append(f"{defender_name} tok {damage} damage")
+    
+#     return text_list
+    
+
 import os
 import time
 from elements import effectiveness_tekst
 
-sleep_time = 1.5
 
+sleep_time = 1.5
 
 
 def clear_screen():
     os.system("cls" if os.name == "nt" else "clear")
 
 
-def get_hp_bar(pokemon: object, bar_length=20):
-    hp_ratio = pokemon.hp / pokemon.max_hp
-    filled = round(hp_ratio * bar_length)
-    empty = bar_length - filled
-    return "|" + "█" * filled + "_" * empty + "|"
-
-
-
-def battle_text(results: dict) -> list:
-    
-    if not results:
-        return []
-    
-    attacker_name = results["attacker_name"]
-    defender_name = results["defender_name"]
-    move_name = results["move_name"]
-    total_effectiveness = results["effectiveness"]
-    critical = results["critical"]
-    damage = results["damage"]
-
-    text_list = []
-    text_list.append(f"{attacker_name} brukte {move_name}\n")
-    if effectiveness_tekst(total_effectiveness) != "":
-        text_list.append(f"{move_name} {effectiveness_tekst(total_effectiveness)}")
-    if critical:
-        text_list.append(f"det var et critical hit!")
-    text_list.append(f"{defender_name} tok {damage} damage")
-    
-    return text_list
-    
-
-import os
-import time
-from elements import effectiveness_tekst
-
-
-sleep_time = 1.5
-
-
-def clear_screen():
-    os.system("cls" if os.name == "nt" else "clear")
-
-
-def get_hp_bar(pokemon: object, hp: int = None, bar_length=20):
+def get_hp_bar(pokemon: object, hp: int | None = None, bar_length: int=20):
     if hp is None:
         hp = pokemon.hp
     

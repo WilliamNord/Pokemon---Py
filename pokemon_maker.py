@@ -24,6 +24,36 @@ def get_stat(stats, stat_name):
 
     raise ValueError(f"Fant ikke stat '{stat_name}'")
 
+#versjoner i rekkefølge av nyeste til eldste
+VERSION_GROUP_PRIORITY = [
+    "scarlet-violet", "sword-shield",
+    "ultra-sun-ultra-moon", "sun-moon",
+    "omega-ruby-alpha-sapphire", "x-y",
+    "black-2-white-2", "black-white",
+    "heartgold-soulsilver", "platinum", "diamond-pearl",
+    "firered-leafgreen", "emerald", "ruby-sapphire",
+    "crystal", "gold-silver", "yellow", "red-blue",
+]
+
+def get_latest_version(data):
+    """
+    Returnerer den nyeste versjonen (version group) pokemonen har level-up moves i.
+
+    Hvis pokemonen ikke finnes i det nyeste spillet, returneres den siste versjonen
+    den faktisk var med i. Returnerer None hvis den ikke har level-up data i noen versjon.
+    """
+    possible_versions = set()
+    
+    for move in data["moves"]:
+        for details in move["version_group_details"]:
+            possible_versions.add(details["version_group"]["name"])
+    
+    for version in VERSION_GROUP_PRIORITY:
+        if version in possible_versions:
+            return version
+    
+    return None
+
 def get_moves_available_for_lvl(data, level):
     """ 
     Denne funksjonen returnerer alle moves som en pokemon kan lære, sortert i kategorier \n
@@ -32,23 +62,30 @@ def get_moves_available_for_lvl(data, level):
     moves_from_machine = set()
     moves_from_level_up = set()
     
+    version_group_selected = get_latest_version(data)
+    
     for move_entry in data["moves"]:
         move_name = move_entry["move"]["name"]
         
         for details in move_entry["version_group_details"]:
-            
+            if details["version_group"]["name"] != version_group_selected:
+                continue
+
             if details["level_learned_at"] <= level:
                 method = details["move_learn_method"]["name"]
                 
                 if method == "level-up":
-                    moves_from_level_up.add(move_name)
+                    moves_from_level_up.add((move_name, details["level_learned_at"]))
                 elif method == "machine":
-                    moves_from_machine.add(move_name)
-                    
+                    moves_from_machine.add((move_name, details["level_learned_at"]))
+    
+    #sorter etter level_learned_at
+    moves_from_level_up = sorted(moves_from_level_up, key=lambda x: x[1])
+    
     return list(moves_from_level_up), list(moves_from_machine)
                 
 
-def get_pokemon_move_names(data, limit=4):
+def get_moves_in_range(data, limit=4):
     """
     Henter navnene på de første move-ene Pokémonen kan lære.
     Dette er bare en enkel løsning foreløpig.
@@ -81,7 +118,7 @@ def make_move(move_name: str) -> object:
     )
 
 
-def make_pokemon(pokemon_name: str, move_names: list = None, level: int = 100) -> object:
+def make_pokemon(pokemon_name: str, move_names: list[object]|None = None, level: int = 100) -> object:
     """
     Henter en Pokémon fra PokéAPI og lager et nytt Pokemon-objekt.
     Hvis moves ikke er spesifisert vil moves bli hentet fra pokeAPI
@@ -110,9 +147,12 @@ def make_pokemon(pokemon_name: str, move_names: list = None, level: int = 100) -
     speed = get_stat(stats, "speed")
     base_exp = data["base_experience"]
     catch_rate = species_data["capture_rate"]
-
+    
     if move_names is None:
-        move_names = get_pokemon_move_names(data, limit=4)
+        move_names = []
+        for i in range(-1, -5, -1):
+            move_names.append(get_moves_available_for_lvl(data, level)[0][i][0])
+        # move_names = get_moves_in_range(data, limit=4)
 
     moves = []
 
@@ -156,7 +196,7 @@ def does_pokemon_exist(pokemon_name: str):
     try:
         get_api_data(endpoint)
         return True
-
+    
     except requests.exceptions.HTTPError as error:
         if error.response.status_code == 404:
             return False
