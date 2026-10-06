@@ -2,11 +2,11 @@ import requests
 
 from pokemon_class import Pokemon
 from move_class import Move
-
+from functools import lru_cache
 
 POKEAPI_URL = "https://pokeapi.co/api/v2"
 
-
+@lru_cache(maxsize=128)
 def get_api_data(endpoint):
     response = requests.get(
         f"{POKEAPI_URL}/{endpoint}",
@@ -46,7 +46,8 @@ def get_latest_version(data):
     
     for move in data["moves"]:
         for details in move["version_group_details"]:
-            possible_versions.add(details["version_group"]["name"])
+            if details["move_learn_method"]["name"] == "level-up":
+                possible_versions.add(details["version_group"]["name"])
     
     for version in VERSION_GROUP_PRIORITY:
         if version in possible_versions:
@@ -118,7 +119,7 @@ def make_move(move_name: str) -> object:
     )
 
 
-def make_pokemon(pokemon_name: str, move_names: list[object]|None = None, level: int = 100) -> object:
+def make_pokemon(pokemon_name: str, move_names: list[str]|None = None, level: int = 100) -> object:
     """
     Henter en Pokémon fra PokéAPI og lager et nytt Pokemon-objekt.
     Hvis moves ikke er spesifisert vil moves bli hentet fra pokeAPI
@@ -127,7 +128,8 @@ def make_pokemon(pokemon_name: str, move_names: list[object]|None = None, level:
     pokemon_name = pokemon_name.strip().lower()
     
     data = get_api_data(f"pokemon/{pokemon_name.lower()}")
-    species_data = get_api_data(f"pokemon-species/{pokemon_name.lower()}")
+    species_name = data["species"]["name"]
+    species_data = get_api_data(f"pokemon-species/{species_name}")
     
 
     stats = data["stats"]
@@ -148,22 +150,28 @@ def make_pokemon(pokemon_name: str, move_names: list[object]|None = None, level:
     base_exp = data["base_experience"]
     catch_rate = species_data["capture_rate"]
     
-    if move_names is None:
-        move_names = []
-        for i in range(-1, -5, -1):
-            move_names.append(get_moves_available_for_lvl(data, level)[0][i][0])
-        # move_names = get_moves_in_range(data, limit=4)
+    level = max(1, min(100, level))
+
+    move_names = list(move_names) if move_names else []
+
+    if len(move_names) < 4:
+        level_up_moves, _ = get_moves_available_for_lvl(data, level)
+
+        for m_name, _ in reversed(level_up_moves):
+            if len(move_names) >= 4:
+                break
+            if m_name not in move_names:
+                move_names.append(m_name)
+
+    if not move_names:
+        move_names = ["struggle"]
 
     moves = []
 
     for move_name in move_names:
         move = make_move(move_name)
         moves.append(move)
-    
-    if level > 100:
-        level = 100
-    if level < 1:
-        level = 1
+        
 
     return Pokemon(
         name = name,

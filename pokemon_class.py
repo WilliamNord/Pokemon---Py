@@ -1,4 +1,4 @@
-from move_bank import scratch
+from move_bank import struggle
 import math
 
 #Klassen for pokemon objekter
@@ -22,7 +22,7 @@ class Pokemon:
         self.catch_rate = catch_rate
         
         if moves is None:
-            self.moves = [scratch]
+            self.moves = [struggle]
         else:
             self.moves = moves
             
@@ -90,7 +90,6 @@ class Pokemon:
         if self.hp <= 0:
             self.hp = 0
             self.fainted = True
-        
     
     def is_fainted(self):
         if self.hp <= 0:

@@ -43,28 +43,28 @@ from battle import *
 
 # print(move.dmg_category)
 
-for i in range(0):
-    print(i)
+# for i in range(0):
+#     print(i)
 
-print()
-for x, y in enumerate(["jeg", "deg"]):
-    print(type(x), x)
-    print(type(y), y)
+# print()
+# for x, y in enumerate(["jeg", "deg"]):
+#     print(type(x), x)
+#     print(type(y), y)
 
-print()
-for x in enumerate(["jeg", "deg"]):
-    print(type(x), x)
+# print()
+# for x in enumerate(["jeg", "deg"]):
+#     print(type(x), x)
 
-print()
-for x, (y,z) in enumerate([["jeg", "deg"], ["du", "meg"]]):
-    print(type(x), x)
-    print(type(y), y)
-    print(type(z), z)
+# print()
+# for x, (y,z) in enumerate([["jeg", "deg"], ["du", "meg"]]):
+#     print(type(x), x)
+#     print(type(y), y)
+#     print(type(z), z)
 
-print()
-for x, indre_liste in enumerate([["jeg", "deg"], ["du", "meg"]]):
-    for y, z in enumerate(indre_liste):
-        print(x, y, z)
+# print()
+# for x, indre_liste in enumerate([["jeg", "deg"], ["du", "meg"]]):
+#     for y, z in enumerate(indre_liste):
+#         print(x, y, z)
     
 # while True:
 #     your = make_pokemon("machamp")
@@ -92,20 +92,34 @@ for x, indre_liste in enumerate([["jeg", "deg"], ["du", "meg"]]):
 
 # print(f"chance: {hit/ 100}")
 
-pkm = make_pokemon("iron-hands")
-print(pkm.moves)
-print(len(pkm.moves))
-print("random move:", pick_random_move(pkm))
+# pkm = make_pokemon("iron-hands")
+# print(pkm.moves)
+# print(len(pkm.moves))
+# print("random move:", pick_random_move(pkm))
 
-liste = ["home", "school"]
-print(liste.index("home"))
+# liste = ["home", "school"]
+# print(liste.index("home"))
 
 # if type(liste.index("hime")) == int:
 #     print("it is int")
 # print(make_pokemon(level=5, pokemon_name="charmander").level)
 # print(ask_player_location(liste), type(ask_player_location(liste)))
 
-pokemon = ask_for_pokemon("pokemon: ")
-data_test = get_api_data(f"pokemon/{pokemon}")
-print(get_moves_available_for_lvl(data_test, 100)[0])
-print(get_moves_available_for_lvl(data_test, 100)[0][-4:])
+# pokemon = ask_for_pokemon("pokemon: ")
+# data_test = get_api_data(f"pokemon/{pokemon}")
+# print(get_moves_available_for_lvl(data_test, 100)[0])
+# print(get_moves_available_for_lvl(data_test, 100)[0][-4:])
+
+pkm: Pokemon = make_pokemon("charmander", ["fire-punch"], 100)
+pkm2: Pokemon = make_pokemon("charmander", None, 100)
+
+for name in pkm.moves:
+    print(name.name)
+
+print("pkm2:")
+for name in pkm2.moves:
+    print(name.name)
+
+thing = []
+if not thing:
+    print("ye")

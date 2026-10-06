@@ -2,6 +2,7 @@ from move_class import Move
 
 #her er alle moves som er i spillet mitt
 
+struggle = Move("struggle", "normal", "physical", 50, None, 0)
 scratch = Move("scratch", "normal", "physical", 10, 100, 0)
 flamethrower = Move("flamethrower", "fire", "special", 70, 100, 0)
 grass_knot = Move("grass-knot", "grass", "physical", 60, 100, 1)
