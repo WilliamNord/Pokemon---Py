@@ -1,4 +1,4 @@
-from inputs import ask_player_location
+from inputs import ask_player_choice
 from player_class import Player
 from pokemon_maker import make_pokemon
 from battle import pokemon_battle
@@ -46,7 +46,7 @@ def make_wild_pokemon(route: dict):
 route_options = list(routes.keys())
 
 def go_to_grass(player: Player):
-    route = ask_player_location(route_options)
+    route = ask_player_choice(route_options)
     wild_pokemon = make_wild_pokemon(routes[route])
     pokemon_battle(player.team[0], wild_pokemon)
     
@@ -63,9 +63,10 @@ location_options = list(options_info.keys())
 
 def game_loop(player):
     while True:
-        location = ask_player_location(location_options)
+        location = ask_player_choice(location_options)
 
         location_function = options_info[location]
+        print(f"du gikk til {location}")
 
         location_function(player)
 

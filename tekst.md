@@ -50,6 +50,7 @@ Utvikling av gameloop:
 * * lage en liste med alle tiljengelige moves (løser 3 og 4) perhaps
 * * jeg kan også lage en liste med machine-learned moves i samme sleng hvis jeg har lyst til å legge til TMs eller HMs senere
 5. legge til exp_rate (hvor mye exp som trengs for lvl up)
+6. velge hvem som skal få exp av en kamp. alle som var med? den som gjorde siste slag? får alle like mye eller er det delt på antall deltagere?
 
 Utvikling av online mode (hvis jeg klare å lage det)
 * inplementere socket.io

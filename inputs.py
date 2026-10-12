@@ -17,7 +17,7 @@ def ask_for_pokemon(prompt: str) -> str:
         print(f"Fant ikke Pokémonen '{pokemon_name}'.")
         print("Prøv igjen.")
 
-def ask_player_location(options: list):
+def ask_player_choice(options: list):
     """ 
     Denne funnksjonen spør spilleren hvor de vil gå. for eksempel "gresset" eller "pokecenter".
     alle stedene har sine egne funksjoner og lar spilleren gjøre ulike ting.

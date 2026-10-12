@@ -86,7 +86,7 @@ def get_moves_available_for_lvl(data, level):
     return list(moves_from_level_up), list(moves_from_machine)
                 
 
-def get_moves_in_range(data, limit=4):
+def get_first_moves_in_range(data, limit=4):
     """
     Henter navnene på de første move-ene Pokémonen kan lære.
     Dette er bare en enkel løsning foreløpig.
@@ -147,7 +147,8 @@ def make_pokemon(pokemon_name: str, move_names: list[str]|None = None, level: in
     sp_attack = get_stat(stats, "special-attack")
     sp_defence = get_stat(stats, "special-defense")
     speed = get_stat(stats, "speed")
-    base_exp = data["base_experience"]
+    growth_rate = species_data["growth_rate"]["name"]
+    base_exp = data["base_experience"] or 50 
     catch_rate = species_data["capture_rate"]
     
     level = max(1, min(100, level))
@@ -183,6 +184,7 @@ def make_pokemon(pokemon_name: str, move_names: list[str]|None = None, level: in
         sp_attack = sp_attack,
         sp_defence = sp_defence,
         speed = speed,
+        growth_rate = growth_rate,
         base_exp = base_exp,
         catch_rate = catch_rate,
         moves = moves,

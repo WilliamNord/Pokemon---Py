@@ -1,9 +1,10 @@
 from move_bank import struggle
+from growth_rates import exp_for_level
 import math
 
 #Klassen for pokemon objekter
 class Pokemon:
-    def __init__(self, name: str, element_1: str, element_2: str, hp: int, attack: int, defence: int, sp_attack: int, sp_defence: int, speed: int, base_exp: int, catch_rate: int , moves:list = None, level = 100, fainted = False):
+    def __init__(self, name: str, element_1: str, element_2: str, hp: int, attack: int, defence: int, sp_attack: int, sp_defence: int, speed: int, growth_rate: int, base_exp: int, catch_rate: int , moves:list = None, level: int = 100, fainted = False):
         self.name = name
         self.element_1 = element_1
         self.element_2 = element_2
@@ -18,6 +19,8 @@ class Pokemon:
             }
         
         self.level = level
+        self.exp = exp_for_level(growth_rate, level)
+        self.growth_rate = growth_rate
         self.base_exp = base_exp
         self.catch_rate = catch_rate
         
@@ -53,7 +56,22 @@ class Pokemon:
         self.calculate_all_stats()
         self.hp = self.max_hp
 
+    def exp_for_next_level(self) -> int:
+        if self.level >= 100:
+            return 0
+        return exp_for_level(self.growth_rate, self.level +1) - self.exp
     
+    def gain_exp(self, amount: int) -> tuple[int, int]:
+        if self.level >= 100:
+            return []
+        self.exp = amount
+        old_level = self.level
+        while self.level < 100 and self.exp >= exp_for_level(self.growth_rate, self.level +1):
+            self.level_up()
+        new_level = self.level
+        return (old_level, new_level)
+        
+            
     #HP kalkuleres litt annerledes enn alle andre stats
     def calculate_stat(self, stat_name: str):
         base_stat = self.base_stats[stat_name]
@@ -76,6 +94,12 @@ class Pokemon:
         self.sp_attack = self.calculate_stat("sp_attack")
         self.sp_defence = self.calculate_stat("sp_defence")
         self.speed = self.calculate_stat("speed")
+    
+    def level_up(self):
+        old_max_hp = self.max_hp
+        self.level += 1
+        self.calculate_all_stats()
+        self.hp = self.max_hp - old_max_hp
     
     def talk(self):
         print(f"jeg er {self.name}")
