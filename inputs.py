@@ -18,6 +18,12 @@ def ask_for_pokemon(prompt: str) -> str:
         print("Prøv igjen.")
 
 def ask_player_location(options: list):
+    """ 
+    Denne funnksjonen spør spilleren hvor de vil gå. for eksempel "gresset" eller "pokecenter".
+    alle stedene har sine egne funksjoner og lar spilleren gjøre ulike ting.
+    Denne funksjonen lar spilleren enten skrive inn indexen eller navnet på hvor de vil gå.
+    F.eks: 1 og "grass" går til samme sted
+    """
     for x, name in enumerate(options):
         print((x + 1), name)
     
@@ -38,6 +44,11 @@ def ask_player_location(options: list):
         if choice in options_lower:
             return options[options.index(choice)]
         
-        
-        
         print("ugyldig index eller navn, prøv igjen")
+
+# def ask_player_route(route_options):
+#     for index, name in enumerate(route_options):
+#         print(index+1, name)
+    
+#     while True:
+#         choice = 

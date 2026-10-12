@@ -1,0 +1,72 @@
+from inputs import ask_player_location
+from player_class import Player
+from pokemon_maker import make_pokemon
+from battle import pokemon_battle
+import math
+import random
+
+player = Player("John pokemon")
+charizard = make_pokemon("charizard")
+player.add_pokemon(charizard)
+
+routes = {
+    "route_1": {
+        "route name": "Route 1",
+        "possible_pokemon": [
+            ("pidgey", 40),
+            ("rattata", 30),
+            ("oddish", 30),
+            ("bellsprout", 30),
+        ],
+        "min_lvl": 2,
+        "max_lvl": 4,
+    }
+}
+
+def make_wild_pokemon(route: dict):
+    possible_pokemon = route["possible_pokemon"]
+    min_lvl = route["min_lvl"]
+    max_lvl = route["max_lvl"]
+    chance_list = []
+    for pokemon in possible_pokemon:
+        number = int(math.trunc(pokemon[1]/10))
+        name = pokemon[0]
+        for i in range (number):
+            chance_list.append(name)
+    
+    random_level = random.randint(min_lvl, max_lvl)
+    random_index = random.randint(0, len(chance_list)-1)
+    pokemon_name = chance_list[random_index]
+    
+    pokemon = make_pokemon(pokemon_name = pokemon_name, level = random_level)
+    print(pokemon.name)
+    return pokemon
+
+
+route_options = list(routes.keys())
+
+def go_to_grass(player: Player):
+    route = ask_player_location(route_options)
+    wild_pokemon = make_wild_pokemon(routes[route])
+    pokemon_battle(player.team[0], wild_pokemon)
+    
+
+def go_to_pokecenter(player):
+    print("pokecenter")
+
+options_info = {
+    "grass": go_to_grass,
+    "pokecenter": go_to_pokecenter,
+}
+
+location_options = list(options_info.keys())
+
+def game_loop(player):
+    while True:
+        location = ask_player_location(location_options)
+
+        location_function = options_info[location]
+
+        location_function(player)
+
+game_loop(player)

@@ -5,7 +5,7 @@ class Player():
         self.team = []
         self.pc = []
     
-    def add_pokemon(self, pokemon: object) -> str:
+    def add_pokemon(self, pokemon: object):
         if len(self.team) < 6:
             self.team.append(pokemon)
             return f"{pokemon.name} er nå i laget ditt"
