@@ -57,6 +57,9 @@ Utvikling av online mode (hvis jeg klare å lage det)
 * Klienten eller P2 skal bare kunne sende sitt move, hvilke pokemon de bruker, om de vil bytte pokemon og mer
 * Hosten skal sende tilbake informasjonen slik at klienten kan rendere samme resultat av den turen. 
 
+QOF:
+* kalkulere OHKO (one hit knock out) sjangsene
+* * Det er bare 16 mulige verdier for hvor mye dmg et move gjør. Å Kalkulere hvor mange av de 16 som er over resterende HP til enemy kan gjøre det enklere for spilleren, men også hjelpe meg med å lage fremtidige bots. Jeg kan gi en bot det movet som alltid gjør mest skade eller det som er høyest sjangse for OHKO (hvis 2 moves er 100% OHKO så tar den etter priority.)
 
 
 ENDRE MOVE FRA API TIL Å HENTE ALLE MOVES FRA LEVEL_UP IKKE BARE FOR LEVEL

@@ -145,8 +145,6 @@ def pokemon_battle(your_pokemon: object, enemy_pokemon: object) -> None:
     #dette er hvor kampen mellom to pokemon blir kalkulert
     print("\n")
     print(f"du er i en kamp med {enemy_pokemon.name}")
-    time.sleep(sleep_value)
-
     
     while not your_pokemon.is_fainted() and not enemy_pokemon.is_fainted():
         render_battle(your_pokemon, enemy_pokemon)
