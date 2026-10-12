@@ -51,5 +51,12 @@ Utvikling av gameloop:
 * * jeg kan også lage en liste med machine-learned moves i samme sleng hvis jeg har lyst til å legge til TMs eller HMs senere
 5. legge til exp_rate (hvor mye exp som trengs for lvl up)
 
+Utvikling av online mode (hvis jeg klare å lage det)
+* inplementere socket.io
+* host skal være en "autorativ server" og er den som bestemmer resultat
+* Klienten eller P2 skal bare kunne sende sitt move, hvilke pokemon de bruker, om de vil bytte pokemon og mer
+* Hosten skal sende tilbake informasjonen slik at klienten kan rendere samme resultat av den turen. 
+
+
 
 ENDRE MOVE FRA API TIL Å HENTE ALLE MOVES FRA LEVEL_UP IKKE BARE FOR LEVEL
