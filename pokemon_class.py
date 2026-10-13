@@ -56,15 +56,22 @@ class Pokemon:
         self.calculate_all_stats()
         self.hp = self.max_hp
 
+    def exp_yield(self):
+        return int(self.base_exp * self.level / 7)
+        
     def exp_for_next_level(self) -> int:
         if self.level >= 100:
             return 0
         return exp_for_level(self.growth_rate, self.level +1) - self.exp
     
     def gain_exp(self, amount: int) -> tuple[int, int]:
+        """ 
+        Denne funksjonen legger til en mengde exp til totalen som sjekker om pokemonen har nok til levele opp.
+        Funksjonen returnerer det gamle og det nye levelet
+        """
         if self.level >= 100:
             return []
-        self.exp = amount
+        self.exp += amount
         old_level = self.level
         while self.level < 100 and self.exp >= exp_for_level(self.growth_rate, self.level +1):
             self.level_up()

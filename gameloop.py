@@ -6,7 +6,7 @@ import math
 import random
 
 player = Player("John pokemon")
-charizard = make_pokemon("charizard")
+charizard = make_pokemon("charmander", level=5, move_names=["flamethrower"])
 player.add_pokemon(charizard)
 
 routes = {
@@ -48,7 +48,12 @@ route_options = list(routes.keys())
 def go_to_grass(player: Player):
     route = ask_player_choice(route_options)
     wild_pokemon = make_wild_pokemon(routes[route])
-    pokemon_battle(player.team[0], wild_pokemon)
+    used_pokemon, exp_amout = pokemon_battle(player.team[0], wild_pokemon)
+    old_level, new_level = used_pokemon.gain_exp(exp_amout)
+    if old_level != new_level:
+        print(f"{used_pokemon.name} gikk fra {old_level} -> {new_level}")
+    else:
+        print(f"{used_pokemon.name} fikk {exp_amout} xp, og totalen er {used_pokemon.exp}")
     
 
 def go_to_pokecenter(player):

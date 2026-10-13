@@ -4,6 +4,8 @@ import time
 from render import render_battle
 from elements import check_effectiveness, total_effectiveness
 import random
+from pokemon_class import Pokemon
+from move_class import Move
 
 def rnd_dmg_range(floor: int, ceil: int) -> float:
     return random.randint(floor, ceil) / 100
@@ -19,7 +21,7 @@ def is_critical() -> bool:
     else:
         return False
 
-def check_if_move_hit(move: object) -> bool:
+def check_if_move_hit(move: Move) -> bool:
     """
     Bruker accuracy-en til {move} til å tilfeldig si om trekket traff eller ikke \n
     Moves som skal ha uendelig accuracy eller fungere uavhengig av det, får en verdi av None og returnerer True
@@ -30,18 +32,18 @@ def check_if_move_hit(move: object) -> bool:
     roll = random.randint(1, 100)
     return roll <= move.accuracy
 
-def check_STAB(pokemon: object, move: object) -> float:
+def check_STAB(pokemon: Pokemon, move: Move) -> float:
     if move.element in pokemon.elements:
         return 1.5
     else:
         return 1.0
 
-def pick_random_move(pokemon: object):
+def pick_random_move(pokemon: Pokemon):
     return (random.randint(1, len(pokemon.moves)) - 1)
-    
+    Pokemon
 
     
-def calculate_attack(attacker: object, defender: object, used_move: object) -> dict:
+def calculate_attack(attacker: Pokemon, defender: Pokemon, used_move: Move) -> dict:
     """
     kalkulerer total dmg gjort mot en annen pokemon med et move
     Kalkulasjonen beregner med physical, special og statur move-kategorier
@@ -104,7 +106,7 @@ def calculate_attack(attacker: object, defender: object, used_move: object) -> d
     return results
 
 
-def who_goes_first(your_pokemon: object, enemy_pokemon: object, your_move: object, enemy_move: object) -> object:
+def who_goes_first(your_pokemon: Pokemon, enemy_pokemon: Pokemon, your_move: Move, enemy_move: Move) -> Pokemon:
     #Denne funksjonen bestemmer hvilken pokemon som går først basert på speed og priority
     if your_move.priority > enemy_move.priority:
         return your_pokemon
@@ -117,7 +119,7 @@ def who_goes_first(your_pokemon: object, enemy_pokemon: object, your_move: objec
         return enemy_pokemon
 
 
-def ask_player_move(your_pokemon: object) -> object:
+def ask_player_move(your_pokemon: Pokemon) -> Move:
     """ 
     denne funksjonen spør spilleren om hvilken av alle moves til dere pokemon som de vil bruke
     """
@@ -141,7 +143,7 @@ def ask_player_move(your_pokemon: object) -> object:
 
 sleep_value = 1.5
 
-def pokemon_battle(your_pokemon: object, enemy_pokemon: object) -> None:
+def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon):
     #dette er hvor kampen mellom to pokemon blir kalkulert
     print("\n")
     print(f"du er i en kamp med {enemy_pokemon.name}")
@@ -189,3 +191,5 @@ def pokemon_battle(your_pokemon: object, enemy_pokemon: object) -> None:
         print(f"Du tapte mot {enemy_pokemon.name}")
     else:
         print(f"Hurray! Du vant mot {enemy_pokemon.name} med din {your_pokemon.name}")
+    
+    return your_pokemon, enemy_pokemon.exp_yield()
