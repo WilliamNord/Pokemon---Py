@@ -106,7 +106,7 @@ class Pokemon:
         old_max_hp = self.max_hp
         self.level += 1
         self.calculate_all_stats()
-        self.hp = self.max_hp - old_max_hp
+        self.hp = int((self.hp / old_max_hp) * self.max_hp)
     
     def talk(self):
         print(f"jeg er {self.name}")
@@ -121,6 +121,10 @@ class Pokemon:
         if self.hp <= 0:
             self.hp = 0
             self.fainted = True
+    
+    def revive_to_max(self):
+        self.fainted = False
+        self.hp = self.max_hp
     
     def is_fainted(self):
         if self.hp <= 0:

@@ -1,6 +1,8 @@
 import os
 import time
 from elements import effectiveness_tekst
+from pokemon_class import Pokemon
+from move_class import Move
 
 
 sleep_time = 1.5
@@ -10,7 +12,7 @@ def clear_screen():
     os.system("cls" if os.name == "nt" else "clear")
 
 
-def get_hp_bar(pokemon: object, hp: int | None = None, bar_length: int=20):
+def get_hp_bar(pokemon: Pokemon, hp: int | None = None, bar_length: int=20):
     if hp is None:
         hp = pokemon.hp
     
@@ -56,7 +58,7 @@ def battle_text(results):
     return text_list
 
 
-def render_battle(your_pokemon, enemy_pokemon, results=None):
+def render_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, results=None):
     """
     Viser den nåværende statusen i en Pokémon-kamp.
 
@@ -73,10 +75,10 @@ def render_battle(your_pokemon, enemy_pokemon, results=None):
         print(f"Battle: {your_pokemon.name} vs {enemy_pokemon.name}")
         print()
 
-        print(f"{your_pokemon.name}: {get_hp_bar(your_pokemon)} {your_hp}/{your_pokemon.max_hp} HP")
+        print(f"{your_pokemon.name}(lvl:{your_pokemon.level}): {get_hp_bar(your_pokemon)} {your_hp}/{your_pokemon.max_hp} HP")
         print()
 
-        print(f"{enemy_pokemon.name}: {get_hp_bar(enemy_pokemon)} {enemy_hp}/{enemy_pokemon.max_hp} HP")
+        print(f"{enemy_pokemon.name}(lvl:{enemy_pokemon.level}): {get_hp_bar(enemy_pokemon)} {enemy_hp}/{enemy_pokemon.max_hp} HP")
         print()
         
         return
@@ -108,10 +110,10 @@ def render_battle(your_pokemon, enemy_pokemon, results=None):
             print(f"Battle: {your_pokemon.name} vs {enemy_pokemon.name}")
             print()
 
-            print(f"{your_pokemon.name}: {get_hp_bar(your_pokemon, your_hp)} {your_hp}/{your_pokemon.max_hp} HP")
+            print(f"{your_pokemon.name}(lvl:{your_pokemon.level}): {get_hp_bar(your_pokemon, your_hp)} {your_hp}/{your_pokemon.max_hp} HP")
             print()
 
-            print(f"{enemy_pokemon.name}: {get_hp_bar(enemy_pokemon, enemy_hp)} {enemy_hp}/{enemy_pokemon.max_hp} HP")
+            print(f"{enemy_pokemon.name}(lvl:{enemy_pokemon.level}): {get_hp_bar(enemy_pokemon, enemy_hp)} {enemy_hp}/{enemy_pokemon.max_hp} HP")
             print()
 
             for message in old_text:

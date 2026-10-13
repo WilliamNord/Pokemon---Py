@@ -123,3 +123,6 @@ for name in pkm2.moves:
 thing = []
 if not thing:
     print("ye")
+
+flot = 1.5
+print(int(flot))

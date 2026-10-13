@@ -51,13 +51,15 @@ def go_to_grass(player: Player):
     used_pokemon, exp_amout = pokemon_battle(player.team[0], wild_pokemon)
     old_level, new_level = used_pokemon.gain_exp(exp_amout)
     if old_level != new_level:
-        print(f"{used_pokemon.name} gikk fra {old_level} -> {new_level}")
+        print(f"{used_pokemon.name} gikk fra lvl {old_level} -> {new_level}")
     else:
         print(f"{used_pokemon.name} fikk {exp_amout} xp, og totalen er {used_pokemon.exp}")
     
 
-def go_to_pokecenter(player):
+def go_to_pokecenter(player: Player):
     print("pokecenter")
+    for pokemon in player.team:
+        pokemon.revive_to_max()
 
 options_info = {
     "grass": go_to_grass,
