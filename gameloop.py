@@ -20,7 +20,9 @@ routes = {
         ],
         "min_lvl": 2,
         "max_lvl": 4,
-    }
+    },
+    "go back": {},
+        
 }
 
 def make_wild_pokemon(route: dict):
@@ -29,9 +31,9 @@ def make_wild_pokemon(route: dict):
     max_lvl = route["max_lvl"]
     chance_list = []
     for pokemon in possible_pokemon:
-        number = int(math.trunc(pokemon[1]/10))
+        weight_number = int(math.trunc(pokemon[1]))
         name = pokemon[0]
-        for i in range (number):
+        for i in range (weight_number):
             chance_list.append(name)
     
     random_level = random.randint(min_lvl, max_lvl)
@@ -46,14 +48,17 @@ def make_wild_pokemon(route: dict):
 route_options = list(routes.keys())
 
 def go_to_grass(player: Player):
-    route = ask_player_choice(route_options)
-    wild_pokemon = make_wild_pokemon(routes[route])
-    used_pokemon, exp_amout = pokemon_battle(player.team[0], wild_pokemon)
-    old_level, new_level = used_pokemon.gain_exp(exp_amout)
-    if old_level != new_level:
-        print(f"{used_pokemon.name} gikk fra lvl {old_level} -> {new_level}")
-    else:
-        print(f"{used_pokemon.name} fikk {exp_amout} xp, og totalen er {used_pokemon.exp}")
+    while True:
+        route = ask_player_choice(route_options, "hvilken route?: ")
+        if route.lower() == "go back":
+            break
+        wild_pokemon = make_wild_pokemon(routes[route])
+        used_pokemon, exp_amout = pokemon_battle(player.team[0], wild_pokemon)
+        old_level, new_level = used_pokemon.gain_exp(exp_amout)
+        if old_level != new_level:
+            print(f"{used_pokemon.name} gikk fra lvl {old_level} -> {new_level}")
+        else:
+            print(f"{used_pokemon.name} fikk {exp_amout} xp, og totalen er {used_pokemon.exp}")
     
 
 def go_to_pokecenter(player: Player):
@@ -70,7 +75,7 @@ location_options = list(options_info.keys())
 
 def game_loop(player):
     while True:
-        location = ask_player_choice(location_options)
+        location = ask_player_choice(location_options, "hvor vil du gå?: ")
 
         location_function = options_info[location]
         print(f"du gikk til {location}")

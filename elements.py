@@ -136,7 +136,6 @@ def effectiveness_tekst(sum_effectiveness: int) -> str:
         case 0:
             return f"hadde INGEN effekt!"
 
-print(effectiveness_tekst(0.25))
 # def effectiveness_tekst(defender: object, move: object) -> str:
 #     effectiveness = [check_effectiveness(defender, move, 0), check_effectiveness(defender, move, 1)]
     

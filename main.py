@@ -1,5 +1,6 @@
 from move_class import Move
 from pokemon_class import Pokemon
+from player_class import Player
 from move_bank import *
 from battle import pokemon_battle
 from pokemon_maker import make_pokemon
@@ -18,5 +19,8 @@ enemy_pokemon_name = ask_for_pokemon("Hvilken pokemon vil du slåss mot?: ")
 your_pokemon = make_pokemon(your_pokemon_name)
 enemy_pokemon = make_pokemon(enemy_pokemon_name)
 
+p = Player("john")
 
-pokemon_battle(your_pokemon, enemy_pokemon)
+p.add_pokeballs("pokeball", 10)
+
+pokemon_battle(your_pokemon, enemy_pokemon, p)

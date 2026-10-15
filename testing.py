@@ -1,6 +1,8 @@
 import random
 from pokemon_maker import *
 from pokemon_class import *
+from player_class import *
+from pokeball_class import *
 from elements import *
 from inputs import *
 from battle import *
@@ -110,19 +112,37 @@ from battle import *
 # print(get_moves_available_for_lvl(data_test, 100)[0])
 # print(get_moves_available_for_lvl(data_test, 100)[0][-4:])
 
-pkm: Pokemon = make_pokemon("charmander", ["fire-punch"], 100)
-pkm2: Pokemon = make_pokemon("charmander", None, 100)
+# pkm: Pokemon = make_pokemon("charmander", ["fire-punch"], 100)
+# pkm2: Pokemon = make_pokemon("charmander", None, 100)
 
-for name in pkm.moves:
-    print(name.name)
+# for name in pkm.moves:
+#     print(name.name)
 
-print("pkm2:")
-for name in pkm2.moves:
-    print(name.name)
+# print("pkm2:")
+# for name in pkm2.moves:
+#     print(name.name)
 
-thing = []
-if not thing:
-    print("ye")
+# thing = []
+# if not thing:
+#     print("ye")
 
-flot = 1.5
-print(int(flot))
+# flot = 1.5
+# print(int(flot))
+
+# dicto = {
+#     "amount": 0
+# }
+
+# for i in range(10):
+#     dicto["amount"] += 1
+
+# print(dicto)
+p = Player("johan")
+print()
+
+p.add_pokeballs("pokeball", 10)
+p.add_pokeballs("greatball", 2)
+p.add_pokeballs("ultraball", 1)
+
+
+print(p.get_available_pkbls())

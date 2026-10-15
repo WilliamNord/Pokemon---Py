@@ -3,8 +3,10 @@ import random
 import time
 from render import render_battle
 from elements import check_effectiveness, total_effectiveness
+from inputs import ask_player_choice
 import random
 from pokemon_class import Pokemon
+from player_class import Player
 from move_class import Move
 
 def rnd_dmg_range(floor: int, ceil: int) -> float:
@@ -143,15 +145,79 @@ def ask_player_move(your_pokemon: Pokemon) -> Move:
 
 sleep_value = 1.5
 
-def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon):
+def run_away():
+    #her kan jeg legge til en sjekk om du klarer å løpe vekk.
+    return True
+
+def try_catch(pokeball, enemy_pokemon: Pokemon):
+    print("*tries to catch*")
+    pass
+
+def attack():
+    pass
+
+# options_info = {
+#     "grass": go_to_grass,
+#     "pokecenter": go_to_pokecenter,
+# }
+
+# location_options = list(options_info.keys())
+
+Battle_options_info = {
+    "attack": attack,
+    "catch": try_catch,
+    "run away": run_away,
+}
+
+Battle_options = list(Battle_options_info.keys())
+
+def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player = None) -> tuple[Pokemon, int]:
     #dette er hvor kampen mellom to pokemon blir kalkulert
+    """_summary_
+
+    Args:
+        your_pokemon (Pokemon): Et Pokemon objekt
+        enemy_pokemon (Pokemon): Et Pokemon objekt
+
+    Returns:
+        tuple [Pokemon, int]:
+        Pokemon: Returnerer hvilken pokemon som sist var i kampen
+        int: hvor mye exp som den fikk (exp kan være 0 i situasjoner hvor en pokemon løper vekk)
+    """
     print("\n")
     print(f"du er i en kamp med {enemy_pokemon.name}")
     
     while not your_pokemon.is_fainted() and not enemy_pokemon.is_fainted():
         render_battle(your_pokemon, enemy_pokemon)
 
+        #kan simplifisere dette senere
+        while True:
+            battle_choice = ask_player_choice(Battle_options, "hva vil du gjøre?: ")
+            render_battle(your_pokemon, enemy_pokemon)
+            if battle_choice == "run away":
+                if run_away() == True:
+                    print("du kom deg unna")
+                    return (your_pokemon, 0)
+                else:
+                    print("du kom deg ikke unna")
+                    #Her må jeg legge til at det går åver til enemy sin tur
+                    break
+            elif battle_choice == "catch":
+                if player == None:
+                    print("Du kan ikke fange denne pokemonen")
+                    continue
+                elif player.pokeballs == 0:
+                    print("du har ingen pokeballer")
+                    continue
+                ball_choice = ask_player_choice(player.get_available_pkbls(), "Hvilken ball vil du bruke?: ")
+                if ball_choice == "back":
+                    continue
+                try_catch(ball_choice, enemy_pokemon)
+            elif battle_choice == "attack":
+                break
+        
         your_move = ask_player_move(your_pokemon)
+        render_battle(your_pokemon, enemy_pokemon)
         enemy_move = enemy_pokemon.moves[pick_random_move(enemy_pokemon)]  # midlertidig enemy AI
 
         first = who_goes_first(your_pokemon, enemy_pokemon, your_move, enemy_move)
@@ -192,4 +258,4 @@ def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon):
     else:
         print(f"Hurray! Du vant mot {enemy_pokemon.name} med din {your_pokemon.name}")
     
-    return your_pokemon, enemy_pokemon.exp_yield()
+    return (your_pokemon, enemy_pokemon.exp_yield())
