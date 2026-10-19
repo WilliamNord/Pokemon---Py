@@ -21,7 +21,13 @@ class Player():
                 "amount": 0
                 },
         }
-    
+    def has_pokeballs(self):
+        for i in range(len(self.pokeballs)):
+            if self.pokeballs[i]["amount"] > 0:
+                return True
+        else:
+            return False
+        
     def add_pokemon(self, pokemon: object):
         if len(self.team) < 6:
             self.team.append(pokemon)

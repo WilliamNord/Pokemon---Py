@@ -192,7 +192,7 @@ def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player
 
         #kan simplifisere dette senere
         while True:
-            battle_choice = ask_player_choice(Battle_options, "hva vil du gjøre?: ")
+            battle_choice = ask_player_choice(options=Battle_options, prompt="hva vil du gjøre?: ")
             render_battle(your_pokemon, enemy_pokemon)
             if battle_choice == "run away":
                 if run_away() == True:
@@ -204,9 +204,9 @@ def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player
                     break
             elif battle_choice == "catch":
                 if player == None:
-                    print("Du kan ikke fange denne pokemonen")
+                    print("Det er ingen spiller")
                     continue
-                elif player.pokeballs == 0:
+                elif player.has_pokeballs == False:
                     print("du har ingen pokeballer")
                     continue
                 ball_choice = ask_player_choice(player.get_available_pkbls(), "Hvilken ball vil du bruke?: ")

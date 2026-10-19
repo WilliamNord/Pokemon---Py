@@ -4,91 +4,125 @@ all_elements = {
         "strong": [],
         "weak": ["rock", "steel"],
         "no_effect": ["ghost"],
+        "short_name": "NOR"
     },
+    
     "fire": {
         "strong": ["grass", "ice", "bug", "steel"],
         "weak": ["ground", "water", "rock",],
-        "no_effect": []
+        "no_effect": [],
+        "short_name": "FIR",
         },
+    
     "water": {
         "strong": ["fire", "ground"],
         "weak": ["grass", "electric"],
         "no_effect": [],
+        "short_name": "WTR",
     },
+    
     "grass": {
         "strong": ["water", "rock", "ground",],
         "weak": ["grass", "fire", "bug", "flying", "poison", "dragon", "steel"],
         "no_effect": [],
+        "short_name": "GRS"
     },
+    
     "electric": {
         "strong": ["water", "flying"],
         "weak": ["grass", "electric", "dragon"],
         "no_effect": ["ground"],
+        "short_name": "ELC"
     },
+    
     "bug":{ 
         "strong": ["grass", "psychic", "dark"],
         "weak": ["fire", "flying", "poison", "fighting", "ghost", "steel", "fairy"],
         "no_effect": [],
+        "short_name": "BUG"
     },
+    
     "flying":{ 
         "strong": ["grass", "bug", "fighting"],
         "weak": ["electric", "rock", "steel"],
         "no_effect": [],
+        "short_name": "FLY"
     },
+    
     "rock":{ 
         "strong": ["fire", "bug", "flying", "ice"],
         "weak": ["ground", "fighting", "steel"],
         "no_effect": [],
+        "short_name": "RCK",
     },
+    
     "poison":{ 
         "strong": ["grass", "fairy"],
         "weak": ["rock", "poison", "ground", "ghost"],
         "no_effect": ["steel"],
+        "short_name": "PSN",
     },
+    
     "ground":{ 
         "strong": ["fire", "electric", "rock", "poison", "steel"],
         "weak": ["grass", "bug"],
         "no_effect": ["flying"],
+        "short_name": "GND"
     },
+    
     "ice":{ 
         "strong": ["grass", "flying", "ground", "dragon"],
         "weak": ["fire", "water", "ice", "steel"],
         "no_effect": [],
+        "short_name": "ICE"
     },
+    
     "fighting":{ 
         "strong": ["normal", "rock", "ice", "dark", "steel"],
         "weak": ["bug", "flying", "poison", "psychic", "fairy"],
         "no_effect": ["ghost"],
+        "short_name": "FGH"
     },
+    
     "psychic":{ 
         "strong": ["poison", "fighting"],
         "weak": ["psychic", "steel"],
         "no_effect": ["dark"],
+        "short_name": "PSY"
     },
+    
     "ghost":{ 
         "strong": ["psychic", "ghost"],
         "weak": ["dark"],
         "no_effect": ["normal"],
+        "short_name": "GHO"
     },
     "dragon":{ 
         "strong": ["dragon"],
         "weak": ["steel"],
         "no_effect": ["fairy"],
+        "short_name": "DRG"
     },
+    
     "dark":{ 
         "strong": ["psychic", "ghost"],
         "weak": ["fighting", "dark", "fairy"],
         "no_effect": [],
+        "short_name": "DRK"
     },
+    
     "steel":{ 
         "strong": ["rock", "ice", "fairy"],
         "weak": ["fire", "water", "electric", "steel"],
         "no_effect": [],
+        "short_name": "STL"
     },
+    
     "fairy":{ 
         "strong": ["fighting", "dragon", "dark"],
         "weak": ["fire", "poison", "steel"],
         "no_effect": [],
+        "short_name": "FRY"
     },
     
 }

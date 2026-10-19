@@ -23,4 +23,5 @@ p = Player("john")
 
 p.add_pokeballs("pokeball", 10)
 
+pokemon_battle(your_pokemon, enemy_pokemon)
 pokemon_battle(your_pokemon, enemy_pokemon, p)

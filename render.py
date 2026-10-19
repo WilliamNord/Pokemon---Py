@@ -1,6 +1,6 @@
 import os
 import time
-from elements import effectiveness_tekst
+from elements import effectiveness_tekst, all_elements
 from pokemon_class import Pokemon
 from move_class import Move
 
@@ -57,6 +57,33 @@ def battle_text(results):
 
     return text_list
 
+def draw_hp_bars(your_pokemon: Pokemon, enemy_pokemon: Pokemon, your_hp, enemy_hp):
+    
+    your_elmt1 = all_elements[your_pokemon.element_1]["short_name"]
+    your_elmt2 = all_elements[your_pokemon.element_2]["short_name"]
+    enemy_elmt1 = all_elements[enemy_pokemon.element_1]["short_name"]
+    enemy_elmt2 = all_elements[enemy_pokemon.element_2]["short_name"]
+    your_elements: str
+    if your_elmt2 != None:
+        your_elements = f"[{your_elmt1}][{your_elmt2}]"
+    else:
+        your_elements = f"[{your_elmt1}]"
+    
+    if enemy_elmt2 != None:
+        enemy_elements = f"[{enemy_elmt1}][{enemy_elmt2}]"
+    else:
+        enemy_elements = f"[{enemy_elmt1}]"
+        
+    
+    print(f"Battle: {your_pokemon.name} vs {enemy_pokemon.name}")
+    print()
+
+    print(f"{your_pokemon.name} {your_elements} (L:{your_pokemon.level}): {get_hp_bar(your_pokemon)} {your_hp}/{your_pokemon.max_hp} HP")
+    print()
+
+    print(f"{enemy_pokemon.name} {enemy_elements} (L:{enemy_pokemon.level}): {get_hp_bar(enemy_pokemon)} {enemy_hp}/{enemy_pokemon.max_hp} HP")
+    print()
+
 
 def render_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, results=None):
     """
@@ -71,15 +98,8 @@ def render_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, results=None):
     
     if results == None:
         clear_screen()
-
-        print(f"Battle: {your_pokemon.name} vs {enemy_pokemon.name}")
-        print()
-
-        print(f"{your_pokemon.name}(lvl:{your_pokemon.level}): {get_hp_bar(your_pokemon)} {your_hp}/{your_pokemon.max_hp} HP")
-        print()
-
-        print(f"{enemy_pokemon.name}(lvl:{enemy_pokemon.level}): {get_hp_bar(enemy_pokemon)} {enemy_hp}/{enemy_pokemon.max_hp} HP")
-        print()
+        
+        draw_hp_bars(your_pokemon, enemy_pokemon, your_hp, enemy_hp)
         
         return
     else:
@@ -107,14 +127,7 @@ def render_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, results=None):
                     
             clear_screen()
 
-            print(f"Battle: {your_pokemon.name} vs {enemy_pokemon.name}")
-            print()
-
-            print(f"{your_pokemon.name}(lvl:{your_pokemon.level}): {get_hp_bar(your_pokemon, your_hp)} {your_hp}/{your_pokemon.max_hp} HP")
-            print()
-
-            print(f"{enemy_pokemon.name}(lvl:{enemy_pokemon.level}): {get_hp_bar(enemy_pokemon, enemy_hp)} {enemy_hp}/{enemy_pokemon.max_hp} HP")
-            print()
+            draw_hp_bars(your_pokemon, enemy_pokemon, your_hp, enemy_hp)
 
             for message in old_text:
                 print(message)

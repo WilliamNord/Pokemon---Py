@@ -144,5 +144,4 @@ p.add_pokeballs("pokeball", 10)
 p.add_pokeballs("greatball", 2)
 p.add_pokeballs("ultraball", 1)
 
-
 print(p.get_available_pkbls())
