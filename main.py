@@ -11,8 +11,6 @@ from inputs import ask_for_pokemon
 # venusaur = Pokemon("venusaur", "grass", "poison", 80, 82, 83, 100, 100, 80, [Solar_Beam, Razor_Leaf])
 # testmon = Pokemon("testmon", "test_element", "None", 1,1,1,1,1,1)
 
-
-
 your_pokemon_name = ask_for_pokemon("Hvilken pokemon vil du ha?: ")
 enemy_pokemon_name = ask_for_pokemon("Hvilken pokemon vil du slåss mot?: ")
 

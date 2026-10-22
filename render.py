@@ -46,7 +46,7 @@ def battle_text(results):
     effectiveness_text = effectiveness_tekst(effectiveness)
 
     if effectiveness_text:
-        text_list.append(f"{move_name} er {effectiveness_text}")
+        text_list.append(f"{move_name} {effectiveness_text}")
 
     if critical:
         text_list.append("critical hit!")
@@ -60,10 +60,16 @@ def battle_text(results):
 def draw_hp_bars(your_pokemon: Pokemon, enemy_pokemon: Pokemon, your_hp, enemy_hp):
     
     your_elmt1 = all_elements[your_pokemon.element_1]["short_name"]
-    your_elmt2 = all_elements[your_pokemon.element_2]["short_name"]
     enemy_elmt1 = all_elements[enemy_pokemon.element_1]["short_name"]
-    enemy_elmt2 = all_elements[enemy_pokemon.element_2]["short_name"]
-    your_elements: str
+    try:
+        your_elmt2 = all_elements[your_pokemon.element_2]["short_name"]
+    except KeyError:
+        your_elmt2 = None
+    try:
+        enemy_elmt2 = all_elements[enemy_pokemon.element_2]["short_name"]
+    except KeyError:
+        enemy_elmt2 = None
+
     if your_elmt2 != None:
         your_elements = f"[{your_elmt1}][{your_elmt2}]"
     else:

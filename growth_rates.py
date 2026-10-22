@@ -1,4 +1,5 @@
-def erratic(n):  # "slow-then-very-fast"
+# "slow-then-very-fast"
+def erratic(n):  
     if n <= 50:
         return n**3 * (100 - n) // 50
     if n <= 68:
@@ -7,7 +8,8 @@ def erratic(n):  # "slow-then-very-fast"
         return n**3 * ((1911 - 10 * n) // 3) // 500
     return n**3 * (160 - n) // 100
 
-def fluctuating(n):  # "fast-then-very-slow"
+#"fast-then-very-slow"
+def fluctuating(n): 
     if n <= 15:
         return n**3 * (((n + 1) // 3) + 24) // 50
     if n <= 35:
@@ -29,4 +31,3 @@ def exp_for_level(growth_rate: str, level: int) ->int:
     
     return max(0, GROWTH_FORMULAS[growth_rate](level))
 
-print((lambda n: n**3)(2)) # 8

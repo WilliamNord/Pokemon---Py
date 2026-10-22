@@ -3,7 +3,7 @@ import random
 import time
 from render import render_battle
 from elements import check_effectiveness, total_effectiveness
-from inputs import ask_player_choice
+from inputs import ask_player_choice, ask_player_move
 import random
 from pokemon_class import Pokemon
 from player_class import Player
@@ -42,7 +42,6 @@ def check_STAB(pokemon: Pokemon, move: Move) -> float:
 
 def pick_random_move(pokemon: Pokemon):
     return (random.randint(1, len(pokemon.moves)) - 1)
-    Pokemon
 
     
 def calculate_attack(attacker: Pokemon, defender: Pokemon, used_move: Move) -> dict:
@@ -51,7 +50,8 @@ def calculate_attack(attacker: Pokemon, defender: Pokemon, used_move: Move) -> d
     Kalkulasjonen beregner med physical, special og statur move-kategorier
     """
     move = used_move
-    results = {"attacker_name": attacker.name,
+    results = {
+        "attacker_name": attacker.name,
         "defender_name": defender.name,
         "move_name": move.name,
         "defender_hp_before_hit": defender.hp,
@@ -121,39 +121,26 @@ def who_goes_first(your_pokemon: Pokemon, enemy_pokemon: Pokemon, your_move: Mov
         return enemy_pokemon
 
 
-def ask_player_move(your_pokemon: Pokemon) -> Move:
-    """ 
-    denne funksjonen spør spilleren om hvilken av alle moves til dere pokemon som de vil bruke
-    """
-    while True:
-        print("\n")
-        for i, move in enumerate(your_pokemon.moves):
-            print(f"{i + 1}. {move.name}")
 
-        try:
-            player_choice = int(input("hvilket move vil du bruke?: "))
 
-            if 1 <= player_choice <= len(your_pokemon.moves):
-                return your_pokemon.moves[player_choice - 1]
-            else:
-                print("ERROR: du må velge et move du har")
-                time.sleep(sleep_value)
-
-        except ValueError:
-            print("du må skrive et tall")
-            time.sleep(sleep_value)
-
-sleep_value = 1.5
 
 def run_away():
     #her kan jeg legge til en sjekk om du klarer å løpe vekk.
     return True
 
-def try_catch(pokeball, enemy_pokemon: Pokemon):
-    print("*tries to catch*")
+def try_catch(pokeball, enemy_pokemon: Pokemon, player):
+    if player == None:
+        print("Det er ingen spiller")
+        
+    elif player.has_pokeballs == False:
+        print("du har ingen pokeballer")
+        
+    ball_choice = ask_player_choice(player.get_available_pkbls(), "Hvilken ball vil du bruke?: ")
+    
+def attack():
     pass
 
-def attack():
+def switch_pokemon():
     pass
 
 # options_info = {
@@ -166,6 +153,7 @@ def attack():
 Battle_options_info = {
     "attack": attack,
     "catch": try_catch,
+    "switch": switch_pokemon,
     "run away": run_away,
 }
 
@@ -191,30 +179,33 @@ def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player
         render_battle(your_pokemon, enemy_pokemon)
 
         #kan simplifisere dette senere
-        while True:
-            battle_choice = ask_player_choice(options=Battle_options, prompt="hva vil du gjøre?: ")
-            render_battle(your_pokemon, enemy_pokemon)
-            if battle_choice == "run away":
-                if run_away() == True:
-                    print("du kom deg unna")
-                    return (your_pokemon, 0)
-                else:
-                    print("du kom deg ikke unna")
-                    #Her må jeg legge til at det går åver til enemy sin tur
-                    break
-            elif battle_choice == "catch":
-                if player == None:
-                    print("Det er ingen spiller")
-                    continue
-                elif player.has_pokeballs == False:
-                    print("du har ingen pokeballer")
-                    continue
-                ball_choice = ask_player_choice(player.get_available_pkbls(), "Hvilken ball vil du bruke?: ")
-                if ball_choice == "back":
-                    continue
-                try_catch(ball_choice, enemy_pokemon)
-            elif battle_choice == "attack":
-                break
+        # while True:
+        #     battle_choice = ask_player_choice(options=Battle_options, prompt="hva vil du gjøre?: ")
+        #     continue
+            # match battle_choice:
+            #     case "attack":
+            #         attack()
+            #         return
+            #     case "catch":
+            #         try_catch(enemy_pokemon)
+            #     case "switch":
+            #         switch_pokemon()
+            #     case "run_away":
+            #         run_away(your_pokemon)
+                    
+            # render_battle(your_pokemon, enemy_pokemon)
+            # if battle_choice == "run away":
+            #     if run_away() == True:
+            #         print("du kom deg unna")
+            #         return (your_pokemon, 0)
+            #     else:
+            #         print("du kom deg ikke unna")
+            #         #Her må jeg legge til at det går åver til enemy sin tur
+            #         break
+            # elif battle_choice == "catch":
+            #     try_catch(enemy_pokemon)
+            # elif battle_choice == "attack":
+            #     break
         
         your_move = ask_player_move(your_pokemon)
         render_battle(your_pokemon, enemy_pokemon)

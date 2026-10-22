@@ -6,7 +6,6 @@ all_elements = {
         "no_effect": ["ghost"],
         "short_name": "NOR"
     },
-    
     "fire": {
         "strong": ["grass", "ice", "bug", "steel"],
         "weak": ["ground", "water", "rock",],

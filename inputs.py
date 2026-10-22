@@ -1,4 +1,9 @@
 from pokemon_maker import does_pokemon_exist
+from pokemon_class import Pokemon
+from move_class import Move
+import time
+
+sleep_value = 1.5
 
 def ask_for_pokemon(prompt: str) -> str:
     """ 
@@ -15,8 +20,32 @@ def ask_for_pokemon(prompt: str) -> str:
 
         print(f"Fant ikke Pokémonen '{pokemon_name}'.")
         print("Prøv igjen.")
+test = 12
+def ask_player_move(your_pokemon: Pokemon) -> Move:
+    """ 
+    denne funksjonen spør spilleren om hvilken av alle moves til dere pokemon som de vil bruke
+    """
+    while True:
+        print("\n")
+        for i, move in enumerate(your_pokemon.moves):
+            print(f"{i + 1}. {move.name:<{test}} TYPE: {move.element} BP: {move.power}, ACCURACY: {move.accuracy}")
 
-def ask_player_choice(options: list, prompt: str = "hva vil du gjøre?: ") -> str:
+        try:
+            player_choice = int(input("hvilket move vil du bruke?: "))
+
+            if 1 <= player_choice <= len(your_pokemon.moves):
+                return your_pokemon.moves[player_choice - 1]
+            else:
+                print("ERROR: du må velge et move du har")
+                time.sleep(sleep_value)
+
+        except ValueError:
+            print("du må skrive et tall")
+            time.sleep(sleep_value)
+
+go_back_return = "back"
+
+def ask_player_choice(options: list, can_go_back: bool = False, prompt: str = "hva vil du gjøre?: ", ) -> str:
     """ 
     Denne funnksjonen spør spilleren hvor de vil gå. for eksempel "gresset" eller "pokecenter".
     alle stedene har sine egne funksjoner og lar spilleren gjøre ulike ting.
@@ -24,6 +53,8 @@ def ask_player_choice(options: list, prompt: str = "hva vil du gjøre?: ") -> st
     F.eks: 1 og "grass" går til samme sted
     """
     print()
+    if can_go_back == True:
+        options.append(go_back_return)
     for x, name in enumerate(options):
         print((x + 1), name)
     

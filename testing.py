@@ -137,6 +137,7 @@ from battle import *
 #     dicto["amount"] += 1
 
 # print(dicto)
+# print((lambda n: n**3)(2)) # 8
 p = Player("johan")
 print()
 
