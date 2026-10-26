@@ -84,10 +84,10 @@ def draw_hp_bars(your_pokemon: Pokemon, enemy_pokemon: Pokemon, your_hp, enemy_h
     print(f"Battle: {your_pokemon.name} vs {enemy_pokemon.name}")
     print()
 
-    print(f"{your_pokemon.name} {your_elements} (L:{your_pokemon.level}): {get_hp_bar(your_pokemon)} {your_hp}/{your_pokemon.max_hp} HP")
+    print(f"{your_pokemon.name} {your_elements} (L:{your_pokemon.level}): {get_hp_bar(your_pokemon, your_hp)} {your_hp}/{your_pokemon.max_hp} HP")
     print()
 
-    print(f"{enemy_pokemon.name} {enemy_elements} (L:{enemy_pokemon.level}): {get_hp_bar(enemy_pokemon)} {enemy_hp}/{enemy_pokemon.max_hp} HP")
+    print(f"{enemy_pokemon.name} {enemy_elements} (L:{enemy_pokemon.level}): {get_hp_bar(enemy_pokemon, enemy_hp)} {enemy_hp}/{enemy_pokemon.max_hp} HP")
     print()
 
 
@@ -106,8 +106,8 @@ def render_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, results=None):
         clear_screen()
         
         draw_hp_bars(your_pokemon, enemy_pokemon, your_hp, enemy_hp)
-        
         return
+    
     else:
         text_list = battle_text(results)
         old_text = []
@@ -115,18 +115,18 @@ def render_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, results=None):
         # Viser én ny melding om gangen
         for index, text in enumerate(text_list):
             old_text.append(text)
-
+            is_last = index == len(text_list) - 1
+            
+            your_hp = your_pokemon.hp
+            enemy_hp = enemy_pokemon.hp
+            
             # her prøver jeg å oppdatere HP bare når "tok damage" teksten vises
-            if index < len(text_list) - 1:
-                your_hp = your_pokemon.hp
-                enemy_hp = enemy_pokemon.hp
-
+            if not is_last:
                 if results["defender_name"] == your_pokemon.name:
                     your_hp = results["defender_hp_before_hit"]
                 
                 elif results["defender_name"] == enemy_pokemon.name:
                     enemy_hp = results["defender_hp_before_hit"]
-            
             else:
                 your_hp = your_pokemon.hp
                 enemy_hp = enemy_pokemon.hp
