@@ -20,9 +20,7 @@ def ask_for_pokemon(prompt: str) -> str:
 
         print(f"Fant ikke Pokémonen '{pokemon_name}'.")
         print("Prøv igjen.")
-
 test = 12
-
 def ask_player_move(your_pokemon: Pokemon) -> Move:
     """ 
     denne funksjonen spør spilleren om hvilken av alle moves til dere pokemon som de vil bruke
@@ -45,29 +43,20 @@ def ask_player_move(your_pokemon: Pokemon) -> Move:
             print("du må skrive et tall")
             time.sleep(sleep_value)
 
-go_back_return = "[go back]"
+go_back_return = "back"
 
-def ask_player_choice(options: list[str | object], can_go_back: bool = False, prompt: str = "hva vil du gjøre?: ", ) -> str:
+def ask_player_choice(options: list, can_go_back: bool = False, prompt: str = "hva vil du gjøre?: ", ) -> str:
     """ 
     Denne funnksjonen spør spilleren hvor de vil gå. for eksempel "gresset" eller "pokecenter".
     alle stedene har sine egne funksjoner og lar spilleren gjøre ulike ting.
     Denne funksjonen lar spilleren enten skrive inn indexen eller navnet på hvor de vil gå.
     F.eks: 1 og "grass" går til samme sted
     """
-    options = list(options)
+    print()
     if can_go_back == True:
         options.append(go_back_return)
-    
-    options_labels = []
-    for option in options:
-        if isinstance(option, Move):
-            options_labels.append(option.name)
-        else:
-            options_labels.append(option)
-        
-    for x, label in enumerate(options_labels):
-        print((x+1), label)
-        
+    for x, name in enumerate(options):
+        print((x + 1), name)
     
     while True:
         choice = input(prompt).lower().strip()
