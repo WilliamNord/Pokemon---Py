@@ -123,12 +123,13 @@ def who_goes_first(your_pokemon: Pokemon, enemy_pokemon: Pokemon, your_move: Mov
 
 
 
+def attack(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player):
+    while True:
+        move = ask_player_move(your_pokemon)
+        
+    pass
 
-def run_away():
-    #her kan jeg legge til en sjekk om du klarer å løpe vekk.
-    return True
-
-def try_catch(pokeball, enemy_pokemon: Pokemon, player):
+def try_catch(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player):
     if player == None:
         print("Det er ingen spiller")
         
@@ -136,12 +137,16 @@ def try_catch(pokeball, enemy_pokemon: Pokemon, player):
         print("du har ingen pokeballer")
         
     ball_choice = ask_player_choice(player.get_available_pkbls(), "Hvilken ball vil du bruke?: ")
-    
-def attack():
+
+def switch_pokemon(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player):
     pass
 
-def switch_pokemon():
-    pass
+def run_away(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player):
+    #her kan jeg legge til en sjekk om du klarer å løpe vekk.
+    return True
+
+    
+
 
 # options_info = {
 #     "grass": go_to_grass,
@@ -150,14 +155,24 @@ def switch_pokemon():
 
 # location_options = list(options_info.keys())
 
-Battle_options_info = {
+Battle_options_functions = {
     "attack": attack,
     "catch": try_catch,
     "switch": switch_pokemon,
     "run away": run_away,
 }
 
-Battle_options = list(Battle_options_info.keys())
+Battle_options = list(Battle_options_functions.keys())
+
+def player_turn(your_pokemon, enemy_pokemon, player):
+    while True:
+        render_battle(your_pokemon, enemy_pokemon)
+        choice = ask_player_choice(options=Battle_options, prompt="hva vil du gjøre?: ")
+        
+        result, move = Battle_options_functions[choice](your_pokemon, enemy_pokemon, player)
+        
+        
+        
 
 def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player = None) -> tuple[Pokemon, int]:
     #dette er hvor kampen mellom to pokemon blir kalkulert
@@ -177,37 +192,12 @@ def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player
     
     while not your_pokemon.is_fainted() and not enemy_pokemon.is_fainted():
         render_battle(your_pokemon, enemy_pokemon)
-
-        #kan simplifisere dette senere
-        # while True:
-        #     battle_choice = ask_player_choice(options=Battle_options, prompt="hva vil du gjøre?: ")
-        #     continue
-            # match battle_choice:
-            #     case "attack":
-            #         attack()
-            #         return
-            #     case "catch":
-            #         try_catch(enemy_pokemon)
-            #     case "switch":
-            #         switch_pokemon()
-            #     case "run_away":
-            #         run_away(your_pokemon)
-                    
-            # render_battle(your_pokemon, enemy_pokemon)
-            # if battle_choice == "run away":
-            #     if run_away() == True:
-            #         print("du kom deg unna")
-            #         return (your_pokemon, 0)
-            #     else:
-            #         print("du kom deg ikke unna")
-            #         #Her må jeg legge til at det går åver til enemy sin tur
-            #         break
-            # elif battle_choice == "catch":
-            #     try_catch(enemy_pokemon)
-            # elif battle_choice == "attack":
-            #     break
         
-        your_move = ask_player_move(your_pokemon)
+
+        moves_opt = [move for move in your_pokemon.moves]
+        
+        your_move = ask_player_choice(moves_opt, prompt="hvilket move vil du bruke?: ", can_go_back=True)
+        
         render_battle(your_pokemon, enemy_pokemon)
         enemy_move = enemy_pokemon.moves[pick_random_move(enemy_pokemon)]  # midlertidig enemy AI
 
