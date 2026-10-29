@@ -134,17 +134,20 @@ def attack(your_pokemon, enemy_pokemon, player):
     return Choice_Results["USED_MOVE"], chosen_move
     
 
-def switch_pokemon(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player = None):
+def switch_pokemon(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player = None, can_go_back: bool = True):
+    render_battle(your_pokemon, enemy_pokemon)
     if player is None:
         return Choice_Results["POKEMON_SWITCHED"], None
     
     available_pokemon = player.get_remaining_pokemon(current_pokemon=your_pokemon)
     available_pokemon_options = [pokemon.name for pokemon in available_pokemon]
     
+    #Spilleren har ikke flere pokemon som er i live. 
     if not available_pokemon:
         print("Du har ingen pokemon du kan bytte til")
         return Choice_Results["TURN_NOT_USED"], None
-    chosen_pokemon = ask_player_choice(available_pokemon_options, True, "Hvilken pokemon vil du bytte til?: ")
+    
+    chosen_pokemon = ask_player_choice(available_pokemon_options, can_go_back, "Hvilken pokemon vil du bytte til?: ")
     
     if chosen_pokemon == go_back_return:
         return Choice_Results["TURN_NOT_USED"], None
@@ -237,6 +240,8 @@ def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player
     print(f"du er i en kamp med {enemy_pokemon.name}")
     ran_away = False
     
+    battle_ongoing = True
+    
     while not your_pokemon.is_fainted() and not enemy_pokemon.is_fainted():
         result, return_obj = player_turn(your_pokemon, enemy_pokemon, player)
         
@@ -258,16 +263,18 @@ def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player
                 do_attack(your_pokemon, enemy_pokemon, your_move, your_pokemon, enemy_pokemon)
                 
                 if not enemy_pokemon.is_fainted():
-                    
                     do_attack(enemy_pokemon, your_pokemon, enemy_move, your_pokemon, enemy_pokemon)
-                    
             else:
-                
                 do_attack(enemy_pokemon, your_pokemon, enemy_move, your_pokemon, enemy_pokemon)
 
                 if not your_pokemon.is_fainted():
-                    
                     do_attack(your_pokemon, enemy_pokemon, your_move, your_pokemon, enemy_pokemon)
+                else:
+                    if player != None:
+                        if player.get_remaining_pokemon(your_pokemon):
+                            _, return_obj = switch_pokemon(your_pokemon, enemy_pokemon, player, False)
+                            your_pokemon = return_obj
+                    
         else:
             do_attack(enemy_pokemon, your_pokemon, enemy_move, your_pokemon, enemy_pokemon)
 
@@ -277,7 +284,12 @@ def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player
     render_battle(your_pokemon, enemy_pokemon)
 
     if your_pokemon.is_fainted():
-        print(f"Du tapte mot {enemy_pokemon.name}")
+        if player != None:
+            if player.get_remaining_pokemon(your_pokemon):
+                _, return_obj = switch_pokemon(your_pokemon, enemy_pokemon, player, False)
+                your_pokemon = return_obj
+            else:
+                print(f"Din {your_pokemon} tapte mot {enemy_pokemon} ")
     else:
         print(f"Hurray! Du vant mot {enemy_pokemon.name} med din {your_pokemon.name}")
     
