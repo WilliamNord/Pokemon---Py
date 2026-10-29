@@ -242,7 +242,7 @@ def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player
     
     battle_ongoing = True
     
-    while not your_pokemon.is_fainted() and not enemy_pokemon.is_fainted():
+    while battle_ongoing:
         result, return_obj = player_turn(your_pokemon, enemy_pokemon, player)
         
         if result == Choice_Results["BATTLE_OVER"]:
@@ -258,12 +258,14 @@ def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player
         if result == Choice_Results["USED_MOVE"]:
             your_move = return_obj
             first = who_goes_first(your_pokemon, enemy_pokemon, your_move, enemy_move)
+            
             if first == your_pokemon:
-                
                 do_attack(your_pokemon, enemy_pokemon, your_move, your_pokemon, enemy_pokemon)
                 
                 if not enemy_pokemon.is_fainted():
                     do_attack(enemy_pokemon, your_pokemon, enemy_move, your_pokemon, enemy_pokemon)
+                else:
+                    battle_ongoing = False
             else:
                 do_attack(enemy_pokemon, your_pokemon, enemy_move, your_pokemon, enemy_pokemon)
 
@@ -274,22 +276,17 @@ def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player
                         if player.get_remaining_pokemon(your_pokemon):
                             _, return_obj = switch_pokemon(your_pokemon, enemy_pokemon, player, False)
                             your_pokemon = return_obj
-                    
         else:
             do_attack(enemy_pokemon, your_pokemon, enemy_move, your_pokemon, enemy_pokemon)
 
     if ran_away:
+        print("Du kom deg unna")
         return your_pokemon, 0
 
     render_battle(your_pokemon, enemy_pokemon)
 
     if your_pokemon.is_fainted():
-        if player != None:
-            if player.get_remaining_pokemon(your_pokemon):
-                _, return_obj = switch_pokemon(your_pokemon, enemy_pokemon, player, False)
-                your_pokemon = return_obj
-            else:
-                print(f"Din {your_pokemon} tapte mot {enemy_pokemon} ")
+        print(f"Din {your_pokemon} tapte mot {enemy_pokemon} ")
     else:
         print(f"Hurray! Du vant mot {enemy_pokemon.name} med din {your_pokemon.name}")
     
