@@ -17,9 +17,12 @@ enemy_pokemon_name = ask_for_pokemon("Hvilken pokemon vil du slåss mot?: ")
 your_pokemon = make_pokemon(your_pokemon_name)
 enemy_pokemon = make_pokemon(enemy_pokemon_name)
 
+ekstra_pokemon = make_pokemon("eternatus")
+
 p = Player("john")
 
 p.add_pokeballs("pokeball", 10)
+p.add_pokemon(your_pokemon)
+p.add_pokemon(ekstra_pokemon)
 
-pokemon_battle(your_pokemon, enemy_pokemon)
 pokemon_battle(your_pokemon, enemy_pokemon, p)

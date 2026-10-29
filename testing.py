@@ -141,8 +141,15 @@ from battle import *
 p = Player("johan")
 print()
 
+bulbasour = make_pokemon("bulbasaur")
+lopunny = make_pokemon("lopunny")
+
 p.add_pokeballs("pokeball", 10)
 p.add_pokeballs("greatball", 2)
 p.add_pokeballs("ultraball", 1)
+p.add_pokemon(bulbasour)
+p.add_pokemon(lopunny)
 
 print(p.get_available_pkbls())
+
+print(p.get_remaining_pokemon())

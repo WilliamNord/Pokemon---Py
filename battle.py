@@ -3,7 +3,7 @@ import random
 import time
 from render import render_battle
 from elements import check_effectiveness, total_effectiveness
-from inputs import ask_player_choice, ask_player_move
+from inputs import ask_player_choice, ask_player_move, go_back_return
 import random
 from pokemon_class import Pokemon
 from player_class import Player
@@ -120,15 +120,44 @@ def who_goes_first(your_pokemon: Pokemon, enemy_pokemon: Pokemon, your_move: Mov
     else:
         return enemy_pokemon
 
+def attack(your_pokemon, enemy_pokemon, player):
+    render_battle(your_pokemon, enemy_pokemon)
+    
+    move_opt = [move.name for move in your_pokemon.moves]
+    move_name = ask_player_choice(move_opt, True, "Hvilket move vil du bruke?: ")
+    
+    if move_name == go_back_return:
+        return Choice_Results["TURN_NOT_USED"], None
+    
+    chosen_move_index = move_opt.index(move_name)
+    chosen_move = your_pokemon.moves[chosen_move_index]
+    return Choice_Results["USED_MOVE"], chosen_move
+    
+
+def switch_pokemon(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player = None):
+    if player is None:
+        return Choice_Results["POKEMON_SWITCHED"], None
+    
+    available_pokemon = player.get_remaining_pokemon(current_pokemon=your_pokemon)
+    available_pokemon_options = [pokemon.name for pokemon in available_pokemon]
+    
+    if not available_pokemon:
+        print("Du har ingen pokemon du kan bytte til")
+        return Choice_Results["TURN_NOT_USED"], None
+    chosen_pokemon = ask_player_choice(available_pokemon_options, True, "Hvilken pokemon vil du bytte til?: ")
+    
+    if chosen_pokemon == go_back_return:
+        return Choice_Results["TURN_NOT_USED"], None
+    
+    pokemon_index = available_pokemon_options.index(chosen_pokemon)
+    
+    pokemon = available_pokemon[pokemon_index]
+    
+    return Choice_Results["POKEMON_SWITCHED"], pokemon
+    
 
 
-
-
-def run_away():
-    #her kan jeg legge til en sjekk om du klarer å løpe vekk.
-    return True
-
-def try_catch(pokeball, enemy_pokemon: Pokemon, player):
+def try_catch(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player):
     if player == None:
         print("Det er ingen spiller")
         
@@ -137,27 +166,59 @@ def try_catch(pokeball, enemy_pokemon: Pokemon, player):
         
     ball_choice = ask_player_choice(player.get_available_pkbls(), "Hvilken ball vil du bruke?: ")
     
-def attack():
-    pass
 
-def switch_pokemon():
-    pass
+def run_away(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player):
+    #her kan jeg legge til en sjekk om du klarer å løpe vekk.
+    return Choice_Results["BATTLE_OVER"],  None
 
-# options_info = {
-#     "grass": go_to_grass,
-#     "pokecenter": go_to_pokecenter,
-# }
+def do_attack(attacker: Pokemon, defender: Pokemon, move: Move, your_pokemon, enemy_pokemon):
+    results = calculate_attack(attacker, defender, move)
+    defender.take_damage(results["damage"])
+    render_battle(your_pokemon, enemy_pokemon, results)
 
-# location_options = list(options_info.keys())
 
-Battle_options_info = {
+def player_turn(your_pokemon, enemy_pokemon, player):
+    """Dette er spilleren sin runde hvor de får velge hva de vil gjøre før runden kalkuleres.
+    Her skal spilleren kunne velge om de vil angripe, fange, bytte pokemon eller løpe vekk.
+    Noen av valgene har i seg selv andre valg.
+
+    Args:
+        your_pokemon (Pokemon): Din pokemon
+        enemy_pokemon (Pokemon): Enemy pokemon
+        player (Player): Spilleren
+
+    Returns:
+        Tuple: Returnerer en resultat string og et objekt basser på hva du velger
+    """
+    while True:
+        render_battle(your_pokemon, enemy_pokemon)
+        choice = ask_player_choice(Battle_options, False, "Hva vil du gjøre?: ")
+        
+        result, return_obj = Battle_options_functions[choice](your_pokemon, enemy_pokemon, player)
+        
+        if result == Choice_Results["TURN_NOT_USED"]:
+            #spilleren bruke ikke turen sin
+            continue
+                    
+        return result, return_obj
+        
+
+Choice_Results = {
+    "USED_MOVE": "used_move",
+    "TURN_USED": "turn_used",
+    "POKEMON_SWITCHED": "pokemon_switched",
+    "TURN_NOT_USED": "turn_not_used",
+    "BATTLE_OVER": "battle_over",
+    }
+
+Battle_options_functions = {
     "attack": attack,
     "catch": try_catch,
     "switch": switch_pokemon,
     "run away": run_away,
 }
 
-Battle_options = list(Battle_options_info.keys())
+Battle_options = list(Battle_options_functions.keys())
 
 def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player = None) -> tuple[Pokemon, int]:
     #dette er hvor kampen mellom to pokemon blir kalkulert
@@ -174,73 +235,44 @@ def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player
     """
     print("\n")
     print(f"du er i en kamp med {enemy_pokemon.name}")
+    ran_away = False
     
     while not your_pokemon.is_fainted() and not enemy_pokemon.is_fainted():
-        render_battle(your_pokemon, enemy_pokemon)
-
-        #kan simplifisere dette senere
-        # while True:
-        #     battle_choice = ask_player_choice(options=Battle_options, prompt="hva vil du gjøre?: ")
-        #     continue
-            # match battle_choice:
-            #     case "attack":
-            #         attack()
-            #         return
-            #     case "catch":
-            #         try_catch(enemy_pokemon)
-            #     case "switch":
-            #         switch_pokemon()
-            #     case "run_away":
-            #         run_away(your_pokemon)
-                    
-            # render_battle(your_pokemon, enemy_pokemon)
-            # if battle_choice == "run away":
-            #     if run_away() == True:
-            #         print("du kom deg unna")
-            #         return (your_pokemon, 0)
-            #     else:
-            #         print("du kom deg ikke unna")
-            #         #Her må jeg legge til at det går åver til enemy sin tur
-            #         break
-            # elif battle_choice == "catch":
-            #     try_catch(enemy_pokemon)
-            # elif battle_choice == "attack":
-            #     break
+        result, return_obj = player_turn(your_pokemon, enemy_pokemon, player)
         
-        your_move = ask_player_move(your_pokemon)
-        render_battle(your_pokemon, enemy_pokemon)
+        if result == Choice_Results["BATTLE_OVER"]:
+            ran_away = True
+            break
+        
+        if result == Choice_Results["POKEMON_SWITCHED"]:
+            your_pokemon = return_obj
+            
+                
         enemy_move = enemy_pokemon.moves[pick_random_move(enemy_pokemon)]  # midlertidig enemy AI
 
-        first = who_goes_first(your_pokemon, enemy_pokemon, your_move, enemy_move)
-
-        if first == your_pokemon:
-            attack_results = calculate_attack(your_pokemon, enemy_pokemon, your_move)
-            enemy_damage = attack_results["damage"]
-            enemy_pokemon.take_damage(enemy_damage)
-
-            render_battle(your_pokemon, enemy_pokemon, attack_results)
-            
-            if not enemy_pokemon.is_fainted():
-                attack_results = calculate_attack(enemy_pokemon, your_pokemon, enemy_move)
-                your_damage = attack_results["damage"]
-                your_pokemon.take_damage(your_damage)
+        if result == Choice_Results["USED_MOVE"]:
+            your_move = return_obj
+            first = who_goes_first(your_pokemon, enemy_pokemon, your_move, enemy_move)
+            if first == your_pokemon:
                 
-                render_battle(your_pokemon, enemy_pokemon, attack_results)
+                do_attack(your_pokemon, enemy_pokemon, your_move, your_pokemon, enemy_pokemon)
+                
+                if not enemy_pokemon.is_fainted():
+                    
+                    do_attack(enemy_pokemon, your_pokemon, enemy_move, your_pokemon, enemy_pokemon)
+                    
+            else:
+                
+                do_attack(enemy_pokemon, your_pokemon, enemy_move, your_pokemon, enemy_pokemon)
+
+                if not your_pokemon.is_fainted():
+                    
+                    do_attack(your_pokemon, enemy_pokemon, your_move, your_pokemon, enemy_pokemon)
         else:
-            
-            attack_results = calculate_attack(enemy_pokemon, your_pokemon, enemy_move)
-            your_damage = attack_results["damage"]
-            your_pokemon.take_damage(your_damage)
-            
-            render_battle(your_pokemon, enemy_pokemon, attack_results)
+            do_attack(enemy_pokemon, your_pokemon, enemy_move, your_pokemon, enemy_pokemon)
 
-            if not your_pokemon.is_fainted():
-                
-                attack_results = calculate_attack(your_pokemon, enemy_pokemon, your_move)
-                enemy_damage = attack_results["damage"]
-                enemy_pokemon.take_damage(enemy_damage)
-
-                render_battle(your_pokemon, enemy_pokemon, attack_results)
+    if ran_away:
+        return your_pokemon, 0
 
     render_battle(your_pokemon, enemy_pokemon)
 
