@@ -167,7 +167,9 @@ def try_catch(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player):
     elif player.has_pokeballs == False:
         print("du har ingen pokeballer")
         
-    ball_choice = ask_player_choice(player.get_available_pkbls(), "Hvilken ball vil du bruke?: ")
+    pokeball_obj_list = player.get_available_pkbls()
+    pokeball_name_list = [ball.pkbl_type for ball in pokeball_obj_list]
+    ball_choice = ask_player_choice(pokeball_name_list, "Hvilken ball vil du bruke?: ")
     
 
 def run_away(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player):
@@ -224,8 +226,8 @@ Battle_options_functions = {
 Battle_options = list(Battle_options_functions.keys())
 
 def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player = None) -> tuple[Pokemon, int]:
-    #dette er hvor kampen mellom to pokemon blir kalkulert
-    """_summary_
+    """
+    Dette er funksjonen som simulerer kampen mellom to pokemon, en pokemon og et lag, (eller senere en lag mot et lag)
 
     Args:
         your_pokemon (Pokemon): Et Pokemon objekt

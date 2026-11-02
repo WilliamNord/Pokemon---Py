@@ -56,9 +56,9 @@ class Player():
             else:
                 self.pokeballs[pkbl_type]["amount"] = 0
     
-    def get_available_pkbls(self):
+    def get_available_pkbls(self) -> list[str]:
         pkbl_list = []
         for ball, info in self.pokeballs.items():
             if info["amount"] > 0:
-                pkbl_list.append(ball)
+                pkbl_list.append(info["pkbl_type"])
         return pkbl_list
