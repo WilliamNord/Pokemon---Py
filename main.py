@@ -17,10 +17,10 @@ from inputs import ask_for_pokemon
 # your_pokemon = make_pokemon(your_pokemon_name)
 # enemy_pokemon = make_pokemon(enemy_pokemon_name)
 
-p1 = make_pokemon("sneasler")
+p1 = make_pokemon("Dachsbun")
 p2 = make_pokemon("kingambit")
 
-enemy_pokemon = make_pokemon("Wailord")
+enemy_pokemon = make_pokemon("Lampent")
 
 p = Player("john")
 
@@ -28,7 +28,7 @@ p.team.append(p1)
 p.team.append(p2)
 
 p.add_pokeballs("greatball", 10)
-p.add_pokeballs("pokeballs", 2)
+p.add_pokeballs("pokeball", 2)
 # p.add_pokemon(your_pokemon)
 # p.add_pokemon(ekstra_pokemon)
 # p.add_pokemon(p2)

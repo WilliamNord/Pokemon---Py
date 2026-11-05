@@ -139,17 +139,37 @@ from battle import *
 # print(dicto)
 # print((lambda n: n**3)(2)) # 8
 p = Player("johan")
-print()
+# print()
 
-bulbasour = make_pokemon("bulbasaur")
-lopunny = make_pokemon("lopunny")
+# bulbasour = make_pokemon("bulbasaur")
+# lopunny = make_pokemon("lopunny")
 
-p.add_pokeballs("pokeball", 10)
-p.add_pokeballs("greatball", 2)
-p.add_pokeballs("ultraball", 1)
-p.add_pokemon(bulbasour)
-p.add_pokemon(lopunny)
+# p.add_pokeballs("pokeball", 10)
+# p.add_pokeballs("greatball", 2)
+# p.add_pokeballs("ultraball", 1)
+# p.add_pokemon(bulbasour)
+# p.add_pokemon(lopunny)
 
-print(p.get_available_pkbls())
+# print(p.get_available_pkbls())
 
-print(p.get_remaining_pokemon())
+# print(p.get_remaining_pokemon())
+
+# pokeball_obj_list = p.get_available_pokeballs()
+# pokeball_name_list = [pokeball.pokeball_name for pokeball in pokeball_obj_list]
+
+tekst = "Hei hei"
+
+ny_text = tekst.split()
+
+for i in ny_text:
+    print(i)
+
+
+# ball_choice = ask_player_choice(pokeball_name_list, "Hvilken ball vil du bruke?: ")
+
+
+ting = "yo yo yo"
+
+ting += "bro"
+
+print(ting)

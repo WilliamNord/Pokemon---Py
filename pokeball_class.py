@@ -1,12 +1,12 @@
 class Pokeball:
-    def __init__(self, pkbl_type: str):
-        self.pokeball_name = pkbl_type.lower()
-        
+    def __init__(self, pokeball_type: str):
+        self.pokeball_type = pokeball_type.lower()
+    
     def get_ballmod(self):
         """ 
         Denne funksjonen returnerer catchrate modifyer som 1, 1.5 eller 2.
         """
-        match self.pokeball_name:
+        match self.pokeball_type:
             case "pokeball":
                 return 1.0
             case "greatball":

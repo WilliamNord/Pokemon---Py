@@ -181,11 +181,17 @@ def try_catch(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player):
     elif player.has_pokeballs == False:
         print("du har ingen pokeballer")
         
-    pokeball_obj_list = player.get_available_pokeballs()
-    pokeball_name_list = [pokeball.pokeball_name for pokeball in pokeball_obj_list]
+    pokeball_tuple_list = player.get_available_pokeballs()
+    pokeball_obj_list = []
+    pokeball_name_list = []
+    pokeball_info_list = []
+    for tuple in pokeball_tuple_list:
+        pokeball_obj_list.append(tuple[0])
+        pokeball_name_list.append(tuple[0].pokeball_type)
+        pokeball_info_list.append(tuple[1])
     
     render_battle(your_pokemon, enemy_pokemon)
-    ball_choice = ask_player_choice(pokeball_name_list, "Hvilken ball vil du bruke?: ")
+    ball_choice = ask_player_choice(pokeball_name_list, "Hvilken ball vil du bruke?: ", extra_info=pokeball_info_list)
     
     pokeball = pokeball_obj_list[pokeball_name_list.index(ball_choice)]
     catch_value = calculate_catchvalue(enemy_pokemon, pokeball)

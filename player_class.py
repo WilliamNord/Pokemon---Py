@@ -18,7 +18,7 @@ class Player():
                 "amount": 0
                 },
             "ultraball": {
-                "pokeball_type": ultraball, 
+                "pokeball_type": ultraball,
                 "amount": 1
                 },
         }
@@ -64,5 +64,5 @@ class Player():
         pokeball_list = []
         for ball, info in self.pokeballs.items():
             if info["amount"] > 0:
-                pokeball_list.append(info["pokeball_type"])
+                pokeball_list.append((info["pokeball_type"], info["amount"]))
         return pokeball_list
