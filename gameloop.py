@@ -19,6 +19,7 @@ routes = {
             ("rattata", 30),
             ("oddish", 30),
             ("bellsprout", 30),
+            ("dragonite", 100),
         ],
         "min_lvl": 2,
         "max_lvl": 4,

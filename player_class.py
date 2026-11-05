@@ -10,16 +10,16 @@ class Player():
         
         self.pokeballs = {
             "pokeball": {
-                "pkbl_type": pokeball, 
+                "pokeball_type": pokeball, 
                 "amount": 0
                 },
             "greatball": {
-                "pkbl_type": greatball, 
+                "pokeball_type": greatball, 
                 "amount": 0
                 },
             "ultraball": {
-                "pkbl_type": ultraball, 
-                "amount": 0
+                "pokeball_type": ultraball, 
+                "amount": 1
                 },
         }
     
@@ -33,7 +33,7 @@ class Player():
     def add_pokemon(self, pokemon: object) -> str:
         if len(self.team) < 6:
             self.team.append(pokemon)
-            return f"{pokemon.name} er nå i laget ditt"
+            return f"{pokemon.name} er nå på laget ditt"
         else:
             self.pc.append(pokemon)
             return f"{pokemon.name} ble sendt til din pc"
@@ -45,20 +45,24 @@ class Player():
                 remaining_pokemon.append(pokemon)
         return remaining_pokemon
     
-    def add_pokeballs(self, pkbl_type: str, amount: int):
-        if pkbl_type in self.pokeballs:
-            self.pokeballs[pkbl_type]["amount"] += amount
+    def add_pokeballs(self, pokeball_type: str, amount: int):
+        if pokeball_type in self.pokeballs:
+            self.pokeballs[pokeball_type]["amount"] += amount
     
-    def remove_pokeballs(self, pkbl_type: str, amount: int = 1):
-        if pkbl_type in self.pokeballs:
-            if self.pokeballs[pkbl_type]["amount"] >= amount:
-                self.pokeballs[pkbl_type]["amount"] -= amount
+    def remove_pokeballs(self, pokeball_type: str, amount: int = 1):
+        if pokeball_type in self.pokeballs:
+            if self.pokeballs[pokeball_type]["amount"] >= amount:
+                self.pokeballs[pokeball_type]["amount"] -= amount
             else:
-                self.pokeballs[pkbl_type]["amount"] = 0
+                self.pokeballs[pokeball_type]["amount"] = 0
     
-    def get_available_pkbls(self) -> list[str]:
-        pkbl_list = []
+    def use_pokeball(self, pokeball_type: str):
+        if self.pokeballs[pokeball_type]["ammount"] >= 0:
+            self.pokeballs[pokeball_type]["ammount"] -= 1
+    
+    def get_available_pokeballs(self) -> list[object]:
+        pokeball_list = []
         for ball, info in self.pokeballs.items():
             if info["amount"] > 0:
-                pkbl_list.append(info["pkbl_type"])
-        return pkbl_list
+                pokeball_list.append(info["pokeball_type"])
+        return pokeball_list

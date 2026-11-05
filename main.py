@@ -11,20 +11,26 @@ from inputs import ask_for_pokemon
 # venusaur = Pokemon("venusaur", "grass", "poison", 80, 82, 83, 100, 100, 80, [Solar_Beam, Razor_Leaf])
 # testmon = Pokemon("testmon", "test_element", "None", 1,1,1,1,1,1)
 
-your_pokemon_name = ask_for_pokemon("Hvilken pokemon vil du ha?: ")
-enemy_pokemon_name = ask_for_pokemon("Hvilken pokemon vil du slåss mot?: ")
+# your_pokemon_name = ask_for_pokemon("Hvilken pokemon vil du ha?: ")
+# enemy_pokemon_name = ask_for_pokemon("Hvilken pokemon vil du slåss mot?: ")
 
-your_pokemon = make_pokemon(your_pokemon_name)
-enemy_pokemon = make_pokemon(enemy_pokemon_name)
+# your_pokemon = make_pokemon(your_pokemon_name)
+# enemy_pokemon = make_pokemon(enemy_pokemon_name)
 
-ekstra_pokemon = make_pokemon("melmetal")
-p2 = make_pokemon("mew")
+p1 = make_pokemon("sneasler")
+p2 = make_pokemon("kingambit")
+
+enemy_pokemon = make_pokemon("Wailord")
 
 p = Player("john")
 
-p.add_pokeballs("pokeball", 10)
-p.add_pokemon(your_pokemon)
-p.add_pokemon(ekstra_pokemon)
-p.add_pokemon(p2)
+p.team.append(p1)
+p.team.append(p2)
 
-pokemon_battle(your_pokemon, enemy_pokemon, p)
+p.add_pokeballs("greatball", 10)
+p.add_pokeballs("pokeballs", 2)
+# p.add_pokemon(your_pokemon)
+# p.add_pokemon(ekstra_pokemon)
+# p.add_pokemon(p2)
+
+pokemon_battle(p.team[0], enemy_pokemon, p)

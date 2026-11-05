@@ -54,6 +54,9 @@ def ask_player_choice(options: list, can_go_back: bool = False, prompt: str = "h
     Denne funksjonen lar spilleren enten skrive inn indexen eller navnet på hvor de vil gå.
     F.eks: 1 og "grass" går til samme sted
     """
+    
+    #passer på at den orginale listen ikke blir endret
+    options = options.copy()
     print()
     if can_go_back == True:
         options.append(go_back_return)
@@ -74,9 +77,7 @@ def ask_player_choice(options: list, can_go_back: bool = False, prompt: str = "h
                 print(f"ugyldig nummer, du må skrivet ett tall mellom 1 og {len(options)}")
                 continue
             
-            
         if choice in options_lower:
-            return options[options.index(choice.lower())]
-        
+            return options[options_lower.index(choice.lower())]
         
         print("ugyldig index eller navn, prøv igjen")
