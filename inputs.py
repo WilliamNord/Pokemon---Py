@@ -47,7 +47,7 @@ def ask_player_move(your_pokemon: Pokemon) -> Move:
 go_back_return = "[go back]"
 
 #burde legge til at tomme inputs ignoreres
-def ask_player_choice(options: list, can_go_back: bool = False, prompt: str = "hva vil du gjøre?: ", extra_info: list = None) -> str:
+def ask_player_choice(options: list, can_go_back: bool = False, prompt: str = "hva vil du gjøre? (template): ", extra_info: list = None) -> str:
     """ 
     Denne funnksjonen spør spilleren hvor de vil gå. for eksempel "gresset" eller "pokecenter".
     alle stedene har sine egne funksjoner og lar spilleren gjøre ulike ting.

@@ -146,6 +146,7 @@ def switch_pokemon(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player
     #Spilleren har ikke flere pokemon som er i live. 
     if not available_pokemon:
         print("Du har ingen pokemon du kan bytte til")
+        time.sleep(sleep_time)
         return Choice_Results["TURN_NOT_USED"], None
     
     chosen_pokemon = ask_player_choice(available_pokemon_options, can_go_back, "Hvilken pokemon vil du bytte til?: ")
@@ -175,30 +176,34 @@ def calculate_catch_shakevalue(catch_value):
     return shakevalue
 
 def try_catch(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player):
+    render_battle(your_pokemon, enemy_pokemon)
+    
     if player == None:
         print("Det er ingen spiller")
-    
-    elif player.has_pokeballs == False:
-        print("du har ingen pokeballer")
-        
+        return Choice_Results["TURN_NOT_USED"], None
+
     pokeball_tuple_list = player.get_available_pokeballs()
-    pokeball_obj_list = []
-    pokeball_name_list = []
-    pokeball_info_list = []
-    for tuple in pokeball_tuple_list:
-        pokeball_obj_list.append(tuple[0])
-        pokeball_name_list.append(tuple[0].pokeball_type)
-        pokeball_info_list.append(tuple[1])
+
+    if not pokeball_tuple_list:
+        print("du har ingen pokeballer")
+        time.sleep(sleep_time)
+        return Choice_Results["TURN_NOT_USED"], None
+        
+    pokeball_obj_list = [ball[0] for ball in pokeball_tuple_list]
+    pokeball_name_list = [ball[0].pokeball_type for ball in pokeball_tuple_list]
+    pokeball_info_list = [ball[1] for ball in pokeball_tuple_list]
     
     render_battle(your_pokemon, enemy_pokemon)
-    ball_choice = ask_player_choice(pokeball_name_list, "Hvilken ball vil du bruke?: ", extra_info=pokeball_info_list)
+    ball_choice = ask_player_choice(options=pokeball_name_list, prompt="Hvilken ball vil du bruke?: ", extra_info=pokeball_info_list)
     
     pokeball = pokeball_obj_list[pokeball_name_list.index(ball_choice)]
+    player.use_pokeball(ball_choice)
     catch_value = calculate_catchvalue(enemy_pokemon, pokeball)
     
     if catch_value >= 255:
         print(f"Du fanget {enemy_pokemon.name} :D")
         player.add_pokemon(enemy_pokemon)
+        time.sleep(sleep_time)
         return Choice_Results["POKEMON_CAUGHT"], enemy_pokemon
     
     
@@ -228,8 +233,7 @@ def pokeball_shake(shake_value: int, target_pokemon: Pokemon) -> tuple[str, None
             print(f"{target_pokemon.name} kom seg ut av ballen :(")
             time.sleep(sleep_time)
             return Choice_Results["TURN_USED"], None
-    
-    print(f"Du fanget {target_pokemon.name}")
+
     return Choice_Results["POKEMON_CAUGHT"], target_pokemon
 
 def run_away(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player):
@@ -242,30 +246,6 @@ def do_attack(attacker: Pokemon, defender: Pokemon, move: Move, your_pokemon, en
     render_battle(your_pokemon, enemy_pokemon, results)
 
 
-def player_turn(your_pokemon, enemy_pokemon, player):
-    """Dette er spilleren sin runde hvor de får velge hva de vil gjøre før runden kalkuleres.
-    Her skal spilleren kunne velge om de vil angripe, fange, bytte pokemon eller løpe vekk.
-    Noen av valgene har i seg selv andre valg.
-
-    Args:
-        your_pokemon (Pokemon): Din pokemon
-        enemy_pokemon (Pokemon): Enemy pokemon
-        player (Player): Spilleren
-
-    Returns:
-        Tuple: Returnerer en resultat string og et objekt basser på hva du velger
-    """
-    while True:
-        render_battle(your_pokemon, enemy_pokemon)
-        choice = ask_player_choice(Battle_options, False, "Hva vil du gjøre?: ")
-        
-        result, return_obj = Battle_options_functions[choice](your_pokemon, enemy_pokemon, player)
-        
-        if result == Choice_Results["TURN_NOT_USED"]:
-            #spilleren bruke ikke turen sin
-            continue
-                    
-        return result, return_obj
         
 
 Choice_Results = {
@@ -285,6 +265,32 @@ Battle_options_functions = {
 }
 
 Battle_options = list(Battle_options_functions.keys())
+
+def player_turn(your_pokemon, enemy_pokemon, player):
+    """Dette er spilleren sin runde hvor de får velge hva de vil gjøre før runden kalkuleres.
+    Her skal spilleren kunne velge om de vil angripe, fange, bytte pokemon eller løpe vekk.
+    Noen av valgene har i seg selv andre valg.
+
+    Args:
+        your_pokemon (Pokemon): Din pokemon
+        enemy_pokemon (Pokemon): Enemy pokemon
+        player (Player): Spilleren
+
+    Returns:
+        Tuple: Returnerer en resultat string og et objekt basser på hva du velger
+    """
+    while True:
+        render_battle(your_pokemon, enemy_pokemon)
+        choice = ask_player_choice(Battle_options, False, "Hva vil du gjøre? (battle options): ")
+        
+        result, return_obj = Battle_options_functions[choice](your_pokemon, enemy_pokemon, player)
+        
+        if result == Choice_Results["TURN_NOT_USED"]:
+            #spilleren bruke ikke turen sin
+            continue
+                    
+        return result, return_obj
+
 
 def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player = None) -> tuple[Pokemon, int]:
     """
@@ -307,6 +313,9 @@ def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player
     battle_ongoing = True
     
     while battle_ongoing and not enemy_pokemon.is_fainted():
+        if enemy_pokemon.is_fainted():
+            battle_ongoing = False
+        
         result, return_obj = player_turn(your_pokemon, enemy_pokemon, player)
         
         if result == Choice_Results["BATTLE_OVER"]:

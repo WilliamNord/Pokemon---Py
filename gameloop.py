@@ -60,11 +60,12 @@ route_options = list(routes.keys())
 
 def go_to_grass(player: Player):
     while True:
+        clear_screen()
         route = ask_player_choice(options=route_options, can_go_back=True, prompt="hvilken route?: ")
         if route.lower() == go_back_return:
             break
         wild_pokemon = make_wild_pokemon(routes[route])
-        used_pokemon, exp_amout = pokemon_battle(player.team[0], wild_pokemon)
+        used_pokemon, exp_amout = pokemon_battle(player.team[0], wild_pokemon, player)
         old_level, new_level = used_pokemon.gain_exp(exp_amout)
         if old_level != new_level:
             print(f"{used_pokemon.name} gikk fra lvl {old_level} -> {new_level}")
@@ -86,11 +87,13 @@ location_options = list(options_info.keys())
 
 def game_loop(player):
     while True:
-        location = ask_player_choice(location_options, "hvor vil du gå?: ")
+        clear_screen()
+        location = ask_player_choice(options=location_options, can_go_back=False, prompt="hvor vil du gå?: ")
 
         location_function = options_info[location]
         clear_screen()
         print(f"du gikk til {location}")
+        print()
 
         location_function(player)
 

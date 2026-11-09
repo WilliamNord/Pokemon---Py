@@ -57,8 +57,8 @@ class Player():
                 self.pokeballs[pokeball_type]["amount"] = 0
     
     def use_pokeball(self, pokeball_type: str):
-        if self.pokeballs[pokeball_type]["ammount"] >= 0:
-            self.pokeballs[pokeball_type]["ammount"] -= 1
+        if self.pokeballs[pokeball_type]["amount"] >= 0:
+            self.pokeballs[pokeball_type]["amount"] -= 1
     
     def get_available_pokeballs(self) -> list[object]:
         pokeball_list = []
