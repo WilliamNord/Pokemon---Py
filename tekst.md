@@ -43,16 +43,16 @@ input feil i ask for move må renderes bedre
 
 Utvikling av gameloop:
 ---
-1. legge til catch_rate fra API
-2. legge til base_experience (exp_yield)
-3. hente de 4 nyeste moves lært basert på lvl(wild pokemon encounter)
-4. legge til bytting av moves
+- ✅ legge til catch_rate fra API 
+- ✅ legge til base_experience (exp_yield)
+- ✅ hente de 4 nyeste moves lært basert på lvl(wild pokemon encounter)
+- ✅ legge til bytting av moves
 * * lage en liste med alle tiljengelige moves (løser 3 og 4) perhaps
 * * jeg kan også lage en liste med machine-learned moves i samme sleng hvis jeg har lyst til å legge til TMs eller HMs senere
-5. legge til exp_rate (hvor mye exp som trengs for lvl up)
-6. velge hvem som skal få exp av en kamp. alle som var med? den som gjorde siste slag? får alle like mye eller er det delt på antall deltagere?
+- ✅ legge til exp_rate (hvor mye exp som trengs for lvl up)
+- velge hvem som skal få exp av en kamp. alle som var med? den som gjorde siste slag? får alle like mye eller er det delt på antall deltagere?
 
-Utvikling av online mode (hvis jeg klare å lage det)
+Utvikling av online mode (hvis jeg får til å lage det)
 * inplementere socket.io
 * host skal være en "autorativ server" og er den som bestemmer resultat
 * Klienten eller P2 skal bare kunne sende sitt move, hvilke pokemon de bruker, om de vil bytte pokemon og mer
