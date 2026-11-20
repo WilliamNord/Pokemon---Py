@@ -196,11 +196,7 @@ def try_catch(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player):
     catch_value = calculate_catchvalue(enemy_pokemon, pokeball)
     
     if catch_value >= 255:
-        print(f"Du fanget {enemy_pokemon.name} :D")
-        player.add_pokemon(enemy_pokemon)
-        time.sleep(sleep_time)
         return Choice_Results["POKEMON_CAUGHT"], enemy_pokemon
-    
     
     render_battle(your_pokemon, enemy_pokemon)
     shake_value = calculate_catch_shakevalue(catch_value)
@@ -369,8 +365,9 @@ def pokemon_battle(your_pokemon: Pokemon, enemy_pokemon: Pokemon, player: Player
         return your_pokemon, 0
     
     if pokemon_caught:
-        print(f"du fanget {enemy_pokemon.name} :D")
+        print(f"Du fanget {enemy_pokemon.name} :D")
         player.add_pokemon(enemy_pokemon)
+        time.sleep(sleep_time)
         return your_pokemon, 0
         
     render_battle(your_pokemon, enemy_pokemon)
