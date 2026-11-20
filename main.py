@@ -20,7 +20,7 @@ from inputs import ask_for_pokemon
 p1 = make_pokemon("Dachsbun")
 p2 = make_pokemon("kingambit")
 
-enemy_pokemon = make_pokemon("Lampent")
+enemy_pokemon = make_pokemon("eternatus")
 
 p = Player("john")
 
